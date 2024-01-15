@@ -1,0 +1,35 @@
+{
+    "name" : "CryDiagnoHealth",
+    "shert_name" : "CryDiagnoHealth",
+    "start_url" : ".",
+    "display" : "standalone",
+    "background_color" : "#585268",
+    "theme_color" : "#585268",
+    "description" : "This app is on dev",
+    "orientation" : "natural",
+    "prefer_related_aplications" : "false",
+    "icons":[
+        {
+            "src":"icons/icon_init.png",
+            "sizes":"192x192",
+            "type":"image/png"
+        },
+        {
+            "src":"icons/icon_init.png",
+            "sizes":"512x512",
+            "type":"image/png"
+        },
+        {
+            "src":"icons/icon_init.png",
+            "sizes":"192x192",
+            "type":"image/png",
+            "purpose" : "maskable"
+        },
+        {
+            "src":"icons/icon_init.png",
+            "sizes":"512x512",
+            "type":"image/png",
+            "purpose" : "maskable"
+        }
+    ]
+}
