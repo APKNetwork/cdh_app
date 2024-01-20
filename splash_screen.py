@@ -2,7 +2,7 @@ from flet import *
 from pages.register import Register
 from pages.forgot_password import ForgotPassword
 from pages.login import Login
-from pages.initapp import Index
+from pages.initapp import main
 
 from utils.extras import *
 from utils.colors import *
@@ -60,7 +60,7 @@ class Main(UserControl):
         new_page = {
             "/login" : Login,
             "/register" : Register,
-            "/initapp" : Index,
+            "/initapp" : main,
             "/forgotpassword" : ForgotPassword
         }[self.page.route](self.page)
 

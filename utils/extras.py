@@ -11,8 +11,10 @@ selected_item = "#6D267B"
 unselected_item = "#ffffff"
 input_fill_color = "#ffffff"
 font_color = "#212121"
+unselected_item = "#808080"
 content_padding = padding.only(left=20,top=10,right=10,bottom=10)
 input_error_bg = "#f8c1bc"
 input_error_outline = "#cb1a2a"
 img_src = "icons/icon_init.png"
+#border=border.all(4, colors.GREEN_600),
 
