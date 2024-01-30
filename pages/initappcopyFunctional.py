@@ -1,5 +1,7 @@
+
+# D E P R E C A T E D on 18/01/24
+
 from flet import *
-from utils.colors import *
 from utils.extras import *
 from utils.onboarding import boarding_change
 

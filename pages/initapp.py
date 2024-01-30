@@ -1,7 +1,14 @@
+
+# D E P R E C A T E D on 22/01/24
+
+
 from flet import *
-from utils.colors import *
 from utils.extras import *
 from utils.onboarding import boarding_change
+
+from pages.forgot_password import ForgotPassword
+from utils.views import views_handler
+from pages.indexer import index
 
 # Define a link style dict.
 link_style = {
@@ -90,9 +97,9 @@ class LandingPage(View):
                                 #Text on top - - -
                                 Container( # Text on top boarding      
                                     alignment=alignment.center,
-                                    padding=padding.only(left=-38),
+                                    padding=padding.only(left=-45),
                                     #wrap=True,                          
-                                    # border=border.all(4, colors.PINK_600),
+                                    #border=border.all(4, colors.PINK_600),
                                     content=Row(
                                         alignment="center",
                                         wrap=True, # Wrap to the over position
@@ -107,7 +114,7 @@ class LandingPage(View):
                                                 max_lines=1,
                                             ),
                                             Image(
-                                                src='assets/icons/iconbear_left_base.png',
+                                                src='assets/icons/iconbear_left_base_three_shadow.png',
                                                 scale=2.2,
                                                 width=100,
                                                 fit=ImageFit.FILL,
@@ -118,14 +125,14 @@ class LandingPage(View):
                                 
                                 #Image positions
                                 Container(
-                                    # border=border.all(4, colors.BLUE_600),
+                                    #border=border.all(4, colors.BLUE_600),
                                     bgcolor="transparent",
                                     width=400,
-                                    height=400,
-                                    padding=padding.only(top=-50),
+                                    height=450,
+                                    padding=padding.only(),
                                     #self.lock
                                     content=Image(
-                                        src='assets/images/recurso_2.png', #Picture one ob
+                                        src='assets/images/recurso_2_forwh.png', #Picture one ob
                                         scale=1.2,
                                         width=100,
                                         height=100,
@@ -134,27 +141,38 @@ class LandingPage(View):
 
                                 Divider(height=0, color="transparent"),
                                 Container( #Generating lines dashed for scroll
-                                    # border=border.all(4, colors.GREEN_600),
-                                    padding=padding.only(top=-70),
+                                    #border=border.all(4, colors.GREEN_600),
+                                    padding=padding.only(),
+                                    height=40,
                                     alignment=alignment.center,
                                     #border=border.all(2, colors.GREEN_600),
                                     content=onboarding_button, # The slider - - -
                                 ),
-                                Text(
-                                    value="Registra llantos de bebés con precisión.",
-                                    font_family='Poppins SemiBold',
-                                    #text_align=TextAlign.CENTER,
-                                    size=26,
-                                    max_lines=2,
-                                    text_align="center",
+                                Container(
+                                    Text(
+                                        value="Registra llantos de bebés con precisión.",
+                                        font_family='Poppins SemiBold',
+                                        #text_align=TextAlign.CENTER,
+                                        size=26,
+                                        max_lines=2,
+                                        text_align="center",
+                                    ),
+                                    height=90,
+                                    alignment=alignment.bottom_center,
+                                    #border=border.all(4, colors.PURPLE_600),
                                 ),
                                 Divider(height=5, color="transparent"),
-                                Text(
-                                    value="Detecta y graba de manera clara y precisa los sonidos para un análisis efectivo.",
-                                    font_family='Poppins SemiBold',
-                                    #text_align=TextAlign.CENTER,
-                                    size=14,
-                                    text_align="center",
+                                Container(
+                                    Text(
+                                        value="Detecta y graba de manera clara y precisa los sonidos para un análisis efectivo.",
+                                        font_family='Poppins SemiBold',
+                                        #text_align=TextAlign.CENTER,
+                                        size=14,
+                                        text_align="center",
+                                    ),
+                                    height=60,
+                                    alignment=alignment.top_center,
+                                    #border=border.all(4, colors.YELLOW_600),
                                 ),
                             ],
                             horizontal_alignment="center",
@@ -209,38 +227,49 @@ class SecondPage(View):
                                     bgcolor="transparent",
                                     width=400,
                                     height=400,
-                                    padding=padding.only(top=-50),
+                                    padding=padding.only(),
                                     #self.lock
                                     content=Image(
-                                        src='assets/images/recurso_4.png', #Picture one ob
+                                        src='assets/images/recurso_4_forwh.png', #Picture one ob
                                         scale=1.2,
                                         width=100,
                                         height=100,
                                     )
                                 ),
 
-                                Divider(height=40, color="transparent"),
+                                Divider(height=30, color="transparent"),
                                 Container( #Generating lines dashed for scroll
-                                    padding=padding.only(top=-70),
+                                    padding=padding.only(),
+                                    height=40,
                                     alignment=alignment.center,
                                     #border=border.all(2, colors.GREEN_600),
                                     content=onboarding_button, # The slider - - -
                                 ),
-                                Text(
-                                    value="Detección temprana de posibles patologías.",
-                                    font_family='Poppins SemiBold',
-                                    #text_align=TextAlign.CENTER,
-                                    size=26,
-                                    max_lines=2,
-                                    text_align="center",
+                                Container(
+                                    Text(
+                                        value="Detección temprana de posibles patologías.",
+                                        font_family='Poppins SemiBold',
+                                        #text_align=TextAlign.CENTER,
+                                        size=26,
+                                        max_lines=2,
+                                        text_align="center",
+                                    ),
+                                    height=90,
+                                    alignment=alignment.bottom_center,
+                                    #border=border.all(4, colors.PURPLE_600),
                                 ),
                                 Divider(height=5, color="transparent"),
-                                Text(
-                                    value="Contribuye a un diagnóstico oportuno a tavés del análisis de los llantos del bebé.",
-                                    font_family='Poppins SemiBold',
-                                    #text_align=TextAlign.CENTER,
-                                    size=14,
-                                    text_align="center",
+                                Container(
+                                    Text(
+                                        value="Contribuye a un diagnóstico oportuno a tavés del análisis de los llantos del bebé.",
+                                        font_family='Poppins SemiBold',
+                                        #text_align=TextAlign.CENTER,
+                                        size=14,
+                                        text_align="center",
+                                    ),
+                                    height=60,
+                                    alignment=alignment.top_center,
+                                    #border=border.all(4, colors.YELLOW_600),
                                 ),
                             ],
                             horizontal_alignment="center",
@@ -275,7 +304,7 @@ class ThirdPage(View):
             content=Text("¡Vamos!", color=input_fill_color, size=15, font_family='Poppins SemiBold'),
             padding=padding.only(left=25, right=25, top=10, bottom=10),
             alignment=alignment.center,
-            on_click=lambda _: page.go("/profile"), # GO TO THE LOGIN METHOD
+            on_click=lambda _: page.go("/landing"), # GO TO THE LOGIN METHOD
         )
 
         #print("Hola, imprimo pero si muestro paso")
@@ -298,38 +327,47 @@ class ThirdPage(View):
                                     bgcolor="transparent",
                                     width=400,
                                     height=400,
-                                    padding=padding.only(top=-50),
+                                    padding=padding.only(),
                                     #self.lock
                                     content=Image(
-                                        src='assets/images/may_menu_1.png', #Picture one ob
+                                        src='assets/images/may_menu_1_forwh.png', #Picture one ob
                                         scale=1.2,
                                         width=100,
                                         height=100,
                                     )
                                 ),
-
                                 Divider(height=30, color="transparent"),
                                 Container( #Generating lines dashed for scroll
-                                    padding=padding.only(top=-70),
+                                    padding=padding.only(),
                                     alignment=alignment.center,
                                     #border=border.all(2, colors.GREEN_600),
                                     content=onboarding_button, # The slider - - -
                                 ),
-                                Text(
-                                    value="Navegación sencilla y amigable.",
-                                    font_family='Poppins SemiBold',
-                                    #text_align=TextAlign.CENTER,
-                                    size=26,
-                                    max_lines=2,
-                                    text_align="center",
-                                ),
+                                Container(
+                                    Text(
+                                            value="Navegación sencilla y amigable.",
+                                            font_family='Poppins SemiBold',
+                                            #text_align=TextAlign.CENTER,
+                                            size=26,
+                                            max_lines=2,
+                                            text_align="center",
+                                        ),
+                                        height=90,
+                                        alignment=alignment.bottom_center,
+                                        #border=border.all(4, colors.PURPLE_600),
+                                    ),
                                 Divider(height=5, color="transparent"),
-                                Text(
-                                    value="Una interfaz fácil de usar que te guiará paso a paso en la detección y diagnóstico.",
-                                    font_family='Poppins SemiBold',
-                                    #text_align=TextAlign.CENTER,
-                                    size=14,
-                                    text_align="center",
+                                Container(
+                                    Text(
+                                        value="Una interfaz fácil de usar que te guiará paso a paso en la detección y diagnóstico.",
+                                        font_family='Poppins SemiBold',
+                                        #text_align=TextAlign.CENTER,
+                                        size=14,
+                                        text_align="center",
+                                    ),
+                                    height=60,
+                                    alignment=alignment.top_center,
+                                    #border=border.all(4, colors.YELLOW_600),
                                 ),
                             ],
                             horizontal_alignment="center",
@@ -343,7 +381,7 @@ class ThirdPage(View):
 
 def main(page: Page):
     # Define page related settings
-    page.theme_mode = ThemeMode.LIGHT
+    page.theme_mode = ThemeMode.LIGHT #Switch the dark ver to deep-purple
     page.title = "Welcome to CryDiagnoHealth" #Title Page
     page.fonts = { #fonts
         "Poppins Bold":"fonts/poppins/Poppins-Bold.ttf",
@@ -356,10 +394,12 @@ def main(page: Page):
     def router(route):
         page.views.clear()
         onboarding_button.controls.clear()
+        print("estoy dentro del router")
 
         if page.route == "/landing":
             landing = LandingPage(page)
             page.views.append(landing)
+            print("entré por landing")
             onpage = 0 #for print correct variable
 
         if page.route == "/secondOnboarding":
@@ -371,6 +411,26 @@ def main(page: Page):
             thirdOnboarding = ThirdPage(page)
             page.views.append(thirdOnboarding)
             onpage = 2
+        if page.route == "/":
+            print("La entrada es directa a /")
+            def init_helper(self,):
+                self.page.on_route_change = self.on_route_change
+                self.page.go('/init_app')
+
+                def on_route_change(self,route):
+                    new_page = {
+                        "/init_app" : main,
+                    }[self.page.route](self.page)
+
+                    self.page.views.clear()
+                    self.page.views.append(
+                        View(
+                            route,
+                            [new_page]
+                        )
+                    )
+            
+            
 
         for x in range(3):
             if x == onpage:

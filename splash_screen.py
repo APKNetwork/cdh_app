@@ -1,22 +1,20 @@
+
+
+# D E P R E C A T E D on 22/01/24
+
+
 from flet import *
-from pages.register import Register
 from pages.forgot_password import ForgotPassword
-from pages.login import Login
 from pages.initapp import main
 
 from utils.extras import *
-from utils.colors import *
 
-class WindowDrag(UserControl):
-    def __init__(self):
-        super().__init__()
-    def build(self):
-        return Container(content=WindowDragArea(height=10,content=Container(bgcolor='white')))
+print("inicio en el MAIN de Splash_Screen")
+print("creo que no se ejecuta")
 
 class Main(UserControl):
     def __init__(self, page: Page,):
         super().__init__()
-
         page.window_title_bar_hidden = True
         page.window_frameless = True
         page.window_title_bar_buttons_hidden = True
@@ -58,8 +56,6 @@ class Main(UserControl):
 
     def on_route_change(self,route):
         new_page = {
-            "/login" : Login,
-            "/register" : Register,
             "/initapp" : main,
             "/forgotpassword" : ForgotPassword
         }[self.page.route](self.page)

@@ -10,23 +10,23 @@
     "prefer_related_aplications" : "false",
     "icons":[
         {
-            "src":"icons/icon_init.png",
+            "src":"icons/iconbear_top_base_twoprofiles.png",
             "sizes":"192x192",
             "type":"image/png"
         },
         {
-            "src":"icons/icon_init.png",
+            "src":"icons/iconbear_top_base_twoprofiles.png",
             "sizes":"512x512",
             "type":"image/png"
         },
         {
-            "src":"icons/icon_init.png",
+            "src":"icons/iconbear_top_base_twoprofiles.png",
             "sizes":"192x192",
             "type":"image/png",
             "purpose" : "maskable"
         },
         {
-            "src":"icons/icon_init.png",
+            "src":"icons/iconbear_top_base_twoprofiles.png",
             "sizes":"512x512",
             "type":"image/png",
             "purpose" : "maskable"

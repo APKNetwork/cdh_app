@@ -1,43 +1,10 @@
 from flet import *
-from utils import back
 from utils.selectable_container import SelectableContainer
 from utils.base import BasePage as BP
-
-class LoginScreen(UserControl):
+class SignupScreen(UserControl):
   def __init__(self, pg):
     super().__init__()
     self.pg = pg
-    self.login_button = Container(
-                on_click=lambda e: self.switch_page(),
-                height=44,
-                width=343,
-                border_radius=5,
-                # bgcolor='#3797EF',
-                bgcolor='#803797EF',
-                alignment=alignment.center,
-                content= Text('Log in',
-                color='white',
-                font_family='SF Pro SemiBold',
-                size=14,
-                text_align='center'
-                ),
-              )
-  def switch_page(self):
-    self.pg.go('/home')
-    back.back_ = '/login'
-           
-  def enable_login(self,e):
-    val = e.control.value
-    if len(val) >= 8:
-      self.login_button.bgcolor = '#3797EF'
-      # self.login_button.on_click=lambda e: self.switch_page(),
-      # self.login_button.on_click= self.switch_page,
-      self.login_button.update()
-    else:  
-      # self.login_button.on_click = None
-      self.login_button.bgcolor = '#803797EF'
-      self.login_button.update()
-
   def build(self):
     return Column(
       controls=[
@@ -52,7 +19,6 @@ class LoginScreen(UserControl):
                 content=Row(
                   controls=[
                     Container(
-                      on_click=lambda _: self.page.go(back.back_),
                       content=Image(
                         src='assets/icons/back.png'
                       )
@@ -120,9 +86,6 @@ class LoginScreen(UserControl):
                 border=border.all(color='#1A000000',width=0.5,),
                 border_radius=5,
                 content=TextField(
-                  password=True,
-                  # can_reveal_password=True,
-                  on_change=self.enable_login,
                   border=InputBorder.NONE,
                   color='#262626',
                   height=40,
@@ -131,7 +94,16 @@ class LoginScreen(UserControl):
                   hint_style=TextStyle(
                     color='#33000000',
                     font_family='SF Pro Regula',
-               
+                    
+#                     """0.1: #1A
+# 0.2: #33
+# 0.3: #4D
+# 0.4: #66
+# 0.5: #80
+# 0.6: #99
+# 0.7: #B3
+# 0.8: #CC
+# 0.9: #E6"""
                   ),
                 
                 )
@@ -158,7 +130,21 @@ class LoginScreen(UserControl):
                 height=30
               ),
               
-              self.login_button,
+              Container(
+                on_click=lambda _: self.page.go('/login'),
+                height=44,
+                width=343,
+                border_radius=5,
+                # bgcolor='#3797EF',
+                bgcolor='#803797EF',
+                alignment=alignment.center,
+                content= Text('Log in',
+                color='white',
+                font_family='SF Pro SemiBold',
+                size=14,
+                text_align='center'
+                ),
+              ),
               Container(
                 height=30,
               ),
