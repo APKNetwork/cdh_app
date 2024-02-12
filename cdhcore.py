@@ -18,11 +18,14 @@ def main(page: Page):
     page.window_title_bar_buttons_hidden = True
     page.bgcolor = colors.TRANSPARENT
     page.window_bgcolor = colors.TRANSPARENT
-    #page.window_width = 400
-    #page.window_height = 2000
+    page.window_min_height = 300
+    page.scroll = "auto"
+    
+    page.window_width = 840
+    page.window_height = 940
 
     page.fonts = {
-    "Poppins ThinItalic":"fonts/poppins/Poppins/ThinItalic.ttf",
+    "Poppins ThinItalic":"fonts/poppins/Poppins/ThimnItalic.ttf",
             "Poppins Black":"fonts/poppins/Poppins-Black.ttf",
             "Poppins BlackItalic":"fonts/poppins/Poppins-BlackItalic.ttf",
             "Poppins Bold":"assets/fonts/poppins/Poppins-Bold.ttf",
