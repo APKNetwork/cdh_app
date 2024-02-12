@@ -66,6 +66,7 @@ class secondOnboardingScreen(UserControl):
 
     #Selector to return or next a page onboarding
     onboarding_button.controls.clear() #cleaning input
+    page.update()
 
     onboarding_button.controls.append(
       Container(
@@ -112,6 +113,8 @@ class secondOnboardingScreen(UserControl):
   def build(self):
     print("deberia estar ahorita mismo en onboarding 2")
     return Column(
+      scroll=ScrollMode.HIDDEN,
+      height=940,
       # expand=True,
       # alignment="end",
       controls=[

@@ -66,6 +66,7 @@ class OnboardingScreen(UserControl):
 
     #Selector to return a page onboarding
     onboarding_button.controls.clear() #cleaning input
+    page.update()
     
     onboarding_button.controls.append(
       Container(
@@ -112,6 +113,8 @@ class OnboardingScreen(UserControl):
   def build(self):
     print("deberia estar ahorita mismo en onboarding uno")
     return Column(
+      scroll=ScrollMode.HIDDEN,
+      height=940,
       # expand=True,
       # alignment="end",
       controls=[
@@ -134,7 +137,7 @@ class OnboardingScreen(UserControl):
                     #Text on top - - -
                     Container( # Text on top boarding      
                         alignment=alignment.center,
-                        padding=padding.only(left=-45),
+                        padding=padding.only(left=-55),
                         #wrap=True,                          
                         #border=border.all(4, colors.PINK_600),
                         content=Row(
