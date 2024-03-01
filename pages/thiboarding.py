@@ -113,64 +113,58 @@ class thirdOnboardingScreen(UserControl):
   def build(self):
     print("deberia estar ahorita mismo en onboarding 2")
     return Column(
-      scroll=ScrollMode.HIDDEN,
-      height=940,
-      # expand=True,
-      # alignment="end",
       controls=[
         BP(
           SafeArea( #returning to the initapp
             expand=True,
-            #bottom=False,
-
             content=Column(
               alignment="spaceBetween",
               spacing=0,
               controls=[
-                 Column(
-                    alignment="SpaceBetween",
-              
-                    # alignment=MainAxisAlignment.CENTER,
-                    #horizontal_alignment='center',
+                 Column(           
+                    horizontal_alignment=CrossAxisAlignment.CENTER, # Text on top boarding      
+                    alignment=MainAxisAlignment.CENTER,
                     controls=[
-                    Divider(height=20, color="transparent"),
+                    Divider(height=0, color="transparent"),
                     #Text on top - - -
                     #Image positions
-                    Container(
-                        bgcolor="transparent",
-                        width=400,
-                        height=400,
-                        padding=padding.only(),
-                        #self.lock
-                        content=Image(
-                            src='assets/images/may_menu_1_forwh.png', #Picture one ob
-                            scale=1.3,
-                            width=100,
-                            height=100,
-                        )
+                    Row(
+                      width=500,
+                      alignment=MainAxisAlignment.CENTER,
+                      controls=[
+                        Container(
+                            bgcolor="transparent",
+                            expand=True,
+                            #height=400,
+                            content=Image(
+                                src='assets/images/may_menu_1_forwh.png', #Picture one ob
+                                scale=1.3,
+                            )
+                        ),
+                      ]
                     ),
-                    Divider(height=30, color="transparent"),
+                    #Divider(height=30, color="transparent"),
                     Container( #Generating lines dashed for scroll
                         padding=padding.only(),
+                        height=40,
                         alignment=alignment.center,
                         #border=border.all(2, colors.GREEN_600),
                         content=onboarding_button, # The slider - - -
                     ),
-                    Divider(height=50, color="transparent"),
+                    Divider(height=30, color="transparent"),
                     Container(
                         Text(
                           value="Navegación sencilla y amigable.",
                           font_family='Poppins SemiBold',
                           #text_align=TextAlign.CENTER,
                           size=26,
-                          max_lines=2,
                           text_align="center",
                       ),
-                      height=90,
+                      height="auto",
                       alignment=alignment.bottom_center,
                       #border=border.all(4, colors.PURPLE_600),
                     ),
-                    Divider(height=5, color="transparent"),
+                    #Divider(height=5, color="transparent"),
                     Container(
                         Text(
                           value="Una interfaz fácil de usar que te guiará paso a paso en la detección y diagnóstico.",
@@ -179,13 +173,12 @@ class thirdOnboardingScreen(UserControl):
                           size=14,
                           text_align="center",
                       ),
-                        height=60,
+                        height="auto",
                         alignment=alignment.top_center,
                         #border=border.all(4, colors.YELLOW_600),
                     ),
-                    Divider(height=65, color="transparent"),
+                    Divider(height=60, color="transparent"),
                   ],
-                  horizontal_alignment="center",
                 ),
                 Row(
                   controls=[

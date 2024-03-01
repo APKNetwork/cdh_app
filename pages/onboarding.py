@@ -113,73 +113,64 @@ class OnboardingScreen(UserControl):
   def build(self):
     print("deberia estar ahorita mismo en onboarding uno")
     return Column(
-      scroll=ScrollMode.HIDDEN,
-      height=940,
-      # expand=True,
-      # alignment="end",
       controls=[
         BP(
           SafeArea( #returning to the initapp
             expand=True,
-            #bottom=False,
-
             content=Column(
               alignment="spaceBetween",
               spacing=0,
               controls=[
                  Column(
-                    alignment="SpaceBetween",
-              
-                    # alignment=MainAxisAlignment.CENTER,
-                    #horizontal_alignment='center',
-                    controls=[
-                    Divider(height=10, color="transparent"),
-                    #Text on top - - -
-                    Container( # Text on top boarding      
-                        alignment=alignment.center,
-                        padding=padding.only(left=-55),
-                        #wrap=True,                          
-                        #border=border.all(4, colors.PINK_600),
-                        content=Row(
-                            alignment="center",
-                            wrap=True, # Wrap to the over position
-                            spacing=60,
-                            controls=[
-                                Text(
-                                    value="Bienvenido a  ",
-                                    #text_align="left",
-                                    text_align=TextAlign.START,
-                                    font_family='Poppins Bold',
-                                    size=22,
-                                    max_lines=1,
-                                ),
-                                Image(
-                                    src='assets/icons/iconbear_left_base_three_shadow.png',
-                                    scale=2.2,
-                                    width=100,
-                                    fit=ImageFit.FILL,
-                                ),
-                            ]
-                        )
-                    ),
-                    
-                    #Image positions
-                    Container(
-                        #border=border.all(4, colors.BLUE_600),
-                        bgcolor="transparent",
-                        width=400,
-                        height=450,
-                        padding=padding.only(),
-                        #self.lock
-                        content=Image(
-                            src='assets/images/recurso_2_forwh.png', #Picture one ob
-                            scale=1.2,
-                            width=100,
-                            height=100,
-                        )
-                    ),
-
+                    horizontal_alignment=CrossAxisAlignment.CENTER, # Text on top boarding      
+                    alignment=MainAxisAlignment.CENTER,
+                    controls=[ 
                     Divider(height=0, color="transparent"),
+                    #Text on top - - -
+                    Row(
+                      wrap=True, # Wrap to the over posit ion
+                      run_spacing=-15, #Espacio de separacion al hacer WRAPPING
+                      spacing=0, #Espacio entre Container
+                      alignment=MainAxisAlignment.CENTER,
+                      vertical_alignment=CrossAxisAlignment.CENTER, # Text on top boarding      
+                        controls=[
+                        Container(
+                          #border=border.all(4x, colors.PINK_600),
+                          content=Text(
+                            value=" Bienvenido a ",
+                            #text_align="left",
+                            text_align=TextAlign.START,
+                            font_family='Poppins Bold',
+                            size=22,
+                            max_lines=1,
+                          )
+                        ),
+                        Container(
+                          content=Image(
+                            src='assets/icons/iconbear_left_base_three_shadow.png',
+                            scale=1,
+                            width=155,
+                            fit=ImageFit.FILL,
+                          ),
+                        ),
+                      ]
+                    ),
+                    #Image positions
+                    Row(
+                       width=500,
+                       alignment=MainAxisAlignment.CENTER,
+                       controls=[
+                          Container(
+                          expand=True,
+                          #border=border.all(4, colors.PINK_600),
+                          content=Image(
+                              src='ass ets/images/recurso_2_forwh.png', #Picture one ob
+                              scale=1.2,
+                              #expand=True,
+                          )
+                        )
+                       ]
+                    ),
                     Container( #Generating lines dashed for scroll
                         #border=border.all(4, colors.GREEN_600),
                         padding=padding.only(),
@@ -188,20 +179,20 @@ class OnboardingScreen(UserControl):
                         #border=border.all(2, colors.GREEN_600),
                         content=onboarding_button, # The slider - - -
                     ),
+                    Divider(height=15, color="transparent"),
                     Container(
                         Text(
                             value="Registra llantos de bebés con precisión.",
                             font_family='Poppins SemiBold',
                             #text_align=TextAlign.CENTER,
                             size=26,
-                            max_lines=2,
                             text_align="center",
                         ),
-                        height=90,
+                        height="auto",
                         alignment=alignment.bottom_center,
                         #border=border.all(4, colors.PURPLE_600),
                     ),
-                    Divider(height=5, color="transparent"),
+                    #Divider(height=0, color="transparent"),
                     Container(
                         Text(
                             value="Detecta y graba de manera clara y precisa los sonidos para un análisis efectivo.",
@@ -210,14 +201,13 @@ class OnboardingScreen(UserControl):
                             size=14,
                             text_align="center",
                         ),
-                        height=80,
+                        height="auto",
                         #border=border.all(5, colors.BLUE_600),
                         alignment=alignment.top_center,
                         #border=border.all(4, colors.YELLOW_600),
                     ),
-                    Divider(height=20, color="transparent"),
+                    Divider(height=40, color="transparent"),
                   ],
-                  horizontal_alignment="center",
                 ),
                 Row(
                   controls=[

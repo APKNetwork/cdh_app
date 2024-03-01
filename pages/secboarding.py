@@ -113,101 +113,94 @@ class secondOnboardingScreen(UserControl):
   def build(self):
     print("deberia estar ahorita mismo en onboarding 2")
     return Column(
-      scroll=ScrollMode.HIDDEN,
-      height=940,
-      # expand=True,
-      # alignment="end",
       controls=[
         BP(
           SafeArea( #returning to the initapp
             expand=True,
-            #bottom=False,
-
             content=Column(
               alignment="spaceBetween",
               spacing=0,
               controls=[
-                 Column(
-                    alignment="SpaceBetween",
-              
-                    # alignment=MainAxisAlignment.CENTER,
-                    #horizontal_alignment='center',
+                 Column(              
+                    # - - wrap=True, # Wrap to the over posit ion
+                    #run_spacing=-15, #Espacio de separacion al hacer WRAPPING
+                    # - - spacing=0, #Espacio entre Container
+                    horizontal_alignment=CrossAxisAlignment.CENTER, # Text on top boarding      
+                    alignment=MainAxisAlignment.CENTER,
                     controls=[
-                    Divider(height=20, color="transparent"),
-                    #Text on top - - -
-                    #Image positions
-                    Container(
-                        bgcolor="transparent",
-                        width=420,
-                        height=420,
-                        padding=padding.only(),
-                        #self.lock
-                        content=Image(
-                            src='assets/images/recurso_4_forwh.png', #Picture one ob
-                            scale=1.2,
-                            width=100,
-                            height=100,
-                        )
-                    ),
-                    Container( #Generating lines dashed for scroll
-                        padding=padding.only(),
-                        height=40,
-                        alignment=alignment.center,
-                        #border=border.all(2, colors.GREEN_600),
-                        content=onboarding_button, # The slider - - -
-                    ),
-                    Divider(height=30, color="transparent"),
-                    Container(
-                        Text(
-                            value="Detección temprana de posibles patologías.",
-                            font_family='Poppins SemiBold',
-                            #text_align=TextAlign.CENTER,
-                            size=26,
-                            max_lines=2,
-                            text_align="center",
-                        ),
-                        height=90,
-                        alignment=alignment.bottom_center,
-                        #border=border.all(4, colors.PURPLE_600),
-                    ),
-                    Divider(height=5, color="transparent"),
-                    Container(
-                        Text(
-                            value="Contribuye a un diagnóstico oportuno a tavés del análisis de los llantos del bebé.",
-                            font_family='Poppins SemiBold',
-                            #text_align=TextAlign.CENTER,
-                            size=14,
-                            text_align="center",
-                        ),
-                        height=60,
-                        alignment=alignment.top_center,
-                        #border=border.all(4, colors.YELLOW_600),
-                    ),
-                    Divider(height=70, color="transparent"),
-                  ],
-                  horizontal_alignment="center",
-                ),
-                Row(
-                  controls=[
-                    Container(
-                    on_click=lambda e: self.switch_page(),
-                    border_radius=25,
-                    expand=True,
-                    bgcolor=base_color,
-                    alignment=alignment.center,
-                    content=Text('Siguiente',
-                      color='white',
-                      font_family='Poppins SemiBold',
-                      size=15,
-                      text_align='center'
+                      Divider(height=0, color="transparent"),
+                      #Text on top - - -
+                      #Image positions 
+                      Row(
+                        width=500,
+                        alignment=MainAxisAlignment.CENTER,
+                        controls=[
+                          Container(
+                              expand=True,
+                              content=Image(
+                                  src='assets/images/recurso_4_forwh.png', #Picture one ob
+                                  scale=1.2,
+                              )
+                            )
+                          ]
                       ),
-                    padding=padding.only(left=25, right=25, top=10, bottom=10),
-                    ),
-                  ], alignment="endBetween",
-                  #padding=padding.only(bottom=20,left=45,right=45),
-                ), 
-              ],
-            ),
+                      Container( #Generating lines dashed for scroll
+                          padding=padding.only(),
+                          height=40,
+                          alignment=alignment.center,
+                          #border=border.all(2, colors.GREEN_600),
+                          content=onboarding_button, # The slider - - -
+                      ),
+                      Divider(height=30, color="transparent"),
+                      Container(
+                          Text(
+                              value="Detección temprana de posibles patologías.",
+                              font_family='Poppins SemiBold',
+                              #text_align=TextAlign.CENTER,
+                              size=26,
+                              text_align="center",
+                          ),
+                          height="auto",
+                          alignment=alignment.bottom_center,
+                          #border=border.all(4, colors.PURPLE_600),
+                      ),
+                      #Divider(height=5, color="transparent"),
+                      Container(
+                          Text(
+                              value="Contribuye a un diagnóstico oportuno a tavés del análisis de los llantos del bebé.",
+                              font_family='Poppins SemiBold',
+                              #text_align=TextAlign.CENTER,
+                              size=14,
+                              text_align="center",
+                          ),
+                          height="auto",
+                          alignment=alignment.top_center,
+                          #border=border.all(4, colors.YELLOW_600),
+                      ),
+                      Divider(height=60, color="transparent"),
+                      Row(
+                        controls=[
+                          Container(
+                          on_click=lambda e: self.switch_page(),
+                          border_radius=25,
+                          expand=True,
+                          bgcolor=base_color,
+                          alignment=alignment.center,
+                          content=Text('Siguiente',
+                            color='white',
+                            font_family='Poppins SemiBold',
+                            size=15,
+                            text_align='center'
+                            ),
+                          padding=padding.only(left=25, right=25, top=10, bottom=10),
+                          ),
+                        ], alignment="endBetween",
+                      #padding=padding.only(bottom=20,left=45,right=45),
+                      ), 
+                    ],
+                ),
+              ]
+            )
           )
         )
       ]
