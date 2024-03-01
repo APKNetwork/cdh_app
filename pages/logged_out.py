@@ -1,6 +1,5 @@
 from flet import *
 from utils.selectable_container import SelectableContainer
-from utils.base import BasePage as BP
 from utils import back
 from utils.extras import *
 
@@ -10,6 +9,10 @@ class LoggedOutScreen(UserControl):
     self.page = page
 
     page.title = "Welcome to CryDiagnoHealth" #Title Page
+    page.horizontal_alignment = CrossAxisAlignment.CENTER
+    page.scroll = ScrollMode.ADAPTIVE
+    page.update()
+
     #page.window_width = base_width
     #page.window_height = base_height
     page.fonts = { #fonts
@@ -19,10 +22,8 @@ class LoggedOutScreen(UserControl):
         "ChauPhilomeneOne Italic":"fonts/ChauPhilomeneOne/ChauPhilomeneOne-Italic.ttf"
     } 
 
-    page.window_min_height = 300
+    #page.window_min_height = 600
     #page.scroll = "adaptative"
-    page.scroll = "False"
-    page.update()
 
   def go_to_login(self):
     self.page.go('/login')
@@ -38,16 +39,24 @@ class LoggedOutScreen(UserControl):
 
     #Funcions for terms and privacy
     def close_dlg(e):
-        dlg_modal.open = False
+        dlg_modal_terms.open = False
+        dlg_modal_policy.open = False
         self.page.update()
 
     
     def on_hover_select(e):
-      e.control.style.bgcolor = base_color  if e.data == "true" else "TRANSPARENT"
+      e.control.style.bgcolor = base_color  if e.data == "true" else "transparent"
       e.control.style.color = input_fill_color  if e.data == "true" else font_color 
       e.control.update()
 
-    dlg_modal = AlertDialog(
+    def on_long_press_select(e):
+      e.control.style.bgcolor = base_color  if e.data == "true" else "transparent"
+      e.control.style.color = input_fill_color  if e.data == "true" else font_color 
+      e.control.style.overlay_color = base_color # if e.data == "true" else "transparent"
+      e.control.update()
+
+    # Popup message for terms of services
+    dlg_modal_terms = AlertDialog(
         modal=True,
         #adaptative=True, revisar para ios cuppertino
         title=Text("POR FAVOR LEA DETENIDAMENTE NUESTROS TERMINOS Y CONDICIONES DEL SERVICIO.",
@@ -297,16 +306,193 @@ class LoggedOutScreen(UserControl):
         ),
 
         actions=[
-            TextButton("Acepto", style=ButtonStyle(color=base_color), on_click=close_dlg, on_hover=on_hover_select),
-            TextButton("No Acepto", style=ButtonStyle(color=base_color), on_click=close_dlg, on_hover=on_hover_select),
+            TextButton("Acepto", style=ButtonStyle(color=base_color, bgcolor="transparent"), on_click=close_dlg, on_hover=on_hover_select, on_long_press=on_long_press_select),
+            TextButton("No Acepto", style=ButtonStyle(color=base_color, bgcolor="transparent"), on_click=close_dlg, on_hover=on_hover_select, on_long_press=on_long_press_select),
         ],
         actions_alignment=MainAxisAlignment.END,
-        on_dismiss=lambda e: print("El dialogo fue cerrado!"),
+        on_dismiss=lambda e: print("El dialogo de los terminos y condiciones fue cerrado!"),
     )
 
+    # Popup message for terms of services
+    dlg_modal_policy = AlertDialog(
+        modal=True,
+        #adaptative=True, revisar para ios cuppertino
+        title=Text("POR FAVOR LEA DETENIDAMENTE NUESTRAS POLITICAS DE PRIVACIDAD.",
+          font_family="Poppins Bold",
+          text_align='JUSTIFY',
+          size=20,
+          ),
+        content=Column(
+          # alignment=MainAxisAlignment.CENTER,
+          auto_scroll=False,
+          scroll=ScrollMode.HIDDEN,
+          alignment="spaceBetween",
+          horizontal_alignment='JUSTIFY',
+          #width=MainAxisAlignment,
+          controls=[            
+            Text(
+            " Fecha de la Última Actualización: [13 - 02 - 2024] .",
+              font_family="Poppins Bold",
+              size=14,
+              bgcolor=base_color,
+              color=input_fill_color,
+            ),
+            Divider(height=10,color="TRANSPARENT", thickness=1),
+            Text(
+               text_align='JUSTIFY',
+                spans=[
+                  TextSpan(
+                    "Gracias por confiar en",
+                    TextStyle(font_family="Poppins SemiBold"),                  
+                    spans=[
+                      TextSpan(
+                      " CryDiagnoHealth ",
+                      TextStyle(font_family="ChauPhilomeneOne Regular", size=18),
+                      ),
+                      TextSpan(
+                        ", para el cuidado de la salud de los bebés. La privacidad de tus datos personales es una prioridad para nosotros. Esta política de privacidad explica cómo recopilamos, utilizamos y protegemos tu información personal, especialmente en relación con el preprocesamiento de patologías en bebés. Al utilizar nuestra aplicación, aceptas las prácticas descritas en esta política de privacidad.",
+                        TextStyle(font_family="Poppins SemiBold"),
+                      ),
+                    ],
+                  )
+                ],
+            ),
+
+            Divider(height=25,color=base_color),
+            Text(
+              "1. Información Recopilada:",
+                font_family="Poppins Bold",
+                size=16,
+              ),
+            Text(
+                '• Recopilamos información personal que nos proporcionas voluntariamente al registrarte en la aplicación, incluidos tu nombre, dirección de correo electrónico, edad, etc. Esta información es necesaria para crear una cuenta personalizada y brindarte acceso a los servicios de la aplicación.',
+                font_family="Poppins SemiBold",
+                text_align="JUSTIFY",
+            ),
+            Text(
+                '• Además, recopilamos información sobre la salud de los bebés, incluidas las grabaciones de llanto, la edad, el color de piel, el idioma principal hablado en el hogar, etc. Esta información es esencial para el análisis y preprocesamiento de patologías en bebés.',
+                font_family="Poppins SemiBold",
+                text_align="JUSTIFY",
+            ),
+            Text(
+                '• La grabación de llantos de bebés es una parte esencial de nuestra aplicación y se utiliza únicamente con el propósito de preprocesar patologías en bebés para facilitar diagnósticos y tratamientos médicos. Nos comprometemos a utilizar esta información de manera ética y responsable.',
+                font_family="Poppins SemiBold",
+                text_align="JUSTIFY",
+            ),
+            Divider(height=15,color="TRANSPARENT"),
+            Text(
+              "2. Uso de la Información:",
+                font_family="Poppins Bold",
+                size=16,
+              ),
+            Text(
+              "• Utilizamos la información recopilada para proporcionar y mejorar nuestros servicios, incluido el preprocesamiento de patologías en bebés. Esta información es fundamental para ayudar a los profesionales de la salud en la detección temprana y el tratamiento adecuado de enfermedades en bebés.",
+              font_family="Poppins SemiBold",
+              text_align="JUSTIFY",
+            ),
+            Text(
+              '• La grabación de llantos de bebés se procesa de forma segura y solo se utiliza con fines médicos y de investigación para mejorar la detección temprana y el tratamiento de enfermedades en bebés.',
+              font_family="Poppins SemiBold",
+              text_align="JUSTIFY",
+            ),
+            Divider(height=15,color="TRANSPARENT"),
+            Text(
+              "3. Protección de la Información:",
+                font_family="Poppins Bold",
+                size=16,
+              ),
+            Text(
+              "• Implementamos medidas de seguridad técnicas y organizativas para proteger tu información personal y la grabación de llantos de bebés contra accesos no autorizados, divulgación o destrucción.",
+              font_family="Poppins SemiBold",
+              text_align="JUSTIFY",
+            ),
+            Text(
+              '• Nos comprometemos a proteger la confidencialidad de la grabación de llantos de bebés y a utilizarla únicamente con fines médicos y de investigación.',
+              font_family="Poppins SemiBold",
+              text_align="JUSTIFY",
+            ),
+            Divider(height=15,color="TRANSPARENT"),
+            Text(
+              "4. Acceso y Control de la Información:",
+                font_family="Poppins Bold",
+                size=16,
+              ),
+            Text(
+              "• Tienes el derecho de acceder, corregir y eliminar tus datos personales en cualquier momento. Puedes actualizar tu información personal y la de los bebés en la configuración de tu cuenta en la aplicación.",
+              font_family="Poppins SemiBold",
+              text_align="JUSTIFY",
+            ),
+            Text(
+              text_align='JUSTIFY',
+              spans=[
+                TextSpan("Si deseas ejercer tus derechos de privacidad o tienes alguna pregunta sobre esta política de privacidad, por favor contáctanos a través de ",TextStyle(font_family="Poppins SemiBold")),
+                TextSpan(
+                  "support@service.crydiagnohealt.com",
+                  TextStyle(font_family="ChauPhilomeneOne Regular", size=14),
+                ),
+              ]
+            ),
+            Divider(height=15,color="TRANSPARENT"),
+            Text(
+              "5. Consentimiento:",
+                font_family="Poppins Bold",
+                size=16,
+              ),
+              Text(
+              "• Al utilizar nuestra aplicación, aceptas la recopilación y el uso de tu información personal, así como de la grabación de llantos de bebés, de acuerdo con esta política de privacidad. Entendemos la sensibilidad de los datos recopilados y nos comprometemos a utilizarlos únicamente con el propósito de preprocesar patologías en bebés y mejorar los servicios de salud. Tu consentimiento es fundamental para proporcionar la atención médica necesaria y continuar avanzando en la investigación en este campo. Si no estás de acuerdo con alguno de los términos de esta política de privacidad, te recomendamos que dejes de utilizar la aplicación de inmediato.",
+              font_family="Poppins SemiBold",
+              text_align="JUSTIFY",
+            ),
+            Divider(height=15,color="TRANSPARENT"),
+            Text(
+              "6. Cambios en la Política de Privacidad:",
+                font_family="Poppins Bold",
+                size=16,
+              ),
+              Text(
+              "• Nos reservamos el derecho de actualizar o modificar esta política de privacidad en cualquier momento para reflejar cambios en nuestras prácticas de recopilación y uso de datos, así como para cumplir con las leyes y regulaciones aplicables. Es importante que revises periódicamente esta política para estar informado sobre cómo se está utilizando y protegiendo tu información personal. Se te notificará sobre cualquier cambio significativo en esta política a través de la aplicación o por otros medios adecuados. El uso continuado de la aplicación después de la publicación de los cambios en esta política se considerará como tu aceptación de dichos cambios.",
+              font_family="Poppins SemiBold",
+              text_align="JUSTIFY",
+            ),
+            Divider(height=25, color=base_color),
+            Text(
+              text_align='JUSTIFY',
+              spans=[
+                TextSpan(
+                  'Al utilizar la aplicación ',
+                  TextStyle(font_family="Poppins SemiBold"),
+                ),
+                TextSpan(
+                  "CryDiagnoHealth",
+                  TextStyle(font_family="ChauPhilomeneOne Regular", size=18),
+                ),
+                TextSpan(" aceptas cumplir con esta política de privacidad. Si tienes alguna pregunta o inquietud sobre esta política, no dudes en ponerte en contacto con nosotros al correo ",TextStyle(font_family="Poppins SemiBold")),
+                TextSpan(
+                  "support@service.crydiagnohealt.com",
+                  TextStyle(font_family="ChauPhilomeneOne Regular", size=14),
+                ),
+              ]
+            ),
+          ]
+        ),
+
+        actions=[
+            TextButton("Acepto", style=ButtonStyle(color=base_color, bgcolor="transparent"), on_click=close_dlg, on_hover=on_hover_select, on_long_press=on_long_press_select),
+            TextButton("No Acepto", style=ButtonStyle(color=base_color, bgcolor="transparent"), on_click=close_dlg, on_hover=on_hover_select, on_long_press=on_long_press_select),
+        ],
+        actions_alignment=MainAxisAlignment.END,
+        on_dismiss=lambda e: print("El dialogo de las politicas de provacidad fue cerrado!"),
+    )
+
+    # Set route for open and close dialogs for terms and policy
     def terms_open_dlg(e):
-        self.page.dialog = dlg_modal
-        dlg_modal.open = True
+        self.page.dialog = dlg_modal_terms
+        dlg_modal_terms.open = True
+        self.page.update()
+    
+    def policy_open_dlg(e):
+        self.page.dialog = dlg_modal_policy
+        dlg_modal_policy.open = True
         self.page.update()
 
     # Set highlight and unhighlight of terms
@@ -318,7 +504,7 @@ class LoggedOutScreen(UserControl):
     def terms_unhighlight_link(e):
       e.control.style.color = base_color
       e.control.update()
-
+ 
     # Set highlight and unhighlight of policy
     def policy_highlight_link(e):
         # For lighnight
@@ -330,189 +516,153 @@ class LoggedOutScreen(UserControl):
         e.control.update()
 
     return Column(
-      scroll=ScrollMode.HIDDEN,
-      height=980,
       controls=[
         SafeArea(
-          bottom=False,
-          maintain_bottom_view_padding = False,
-          minimum = 5,
           #expand=True,
           content=Column(
             alignment="spaceBetween",
+            spacing=0,
             controls=[ #este controlador expande al tamaño del padre
-              Container(
-                #border=border.all(6, colors.PINK_600),
-                #padding = padding.only(left=35,right=35, bottom=40),
-                content=Column(
-                  # alignment=MainAxisAlignment.CENTER,
-                  alignment="spaceBetween",
-                  horizontal_alignment='center',
-                  controls=[
-                    Container(
-                      #border=border.all(6, colors.RED_600),
-                      padding = padding.only(top=-5,bottom=-30),
-                      #border=border.all(5, colors.BLUE_600),
-                      bgcolor="transparent",
-                      width=450,
-                      height=300,
-                      #padding=padding.only(),
-                      content=Image(
-                          src='assets/images/recurso_6_forwh.png', #Picture one ob
-                          scale=1.2,
-                          width=100,
-                          height=100,
-                      )
-                    ),
-                    # Image(
-                    #   src='assets/images/logo.png',
-                    #   width=200,
-                    # ),
-                    # CircleAvatar(
-                    #   foreground_image_url='https://images.unsplash.com/photo-1548449112-96a38a643324?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80',
-                    #   # ,
-                    #   radius=85//2,
-                    # ),
-                    # Container(
-                    #   height=10
-                    # ),
-                    Text(
-                      #overflow=TextOverflow.FADE, FADED
-                      overflow=TextOverflow.VISIBLE,
-                      value="Crea tu cuenta de CryDiagnoHealth.",
-                      #no_wrap=False,
+              Column(
+              horizontal_alignment=CrossAxisAlignment.CENTER, # Text on top boarding      
+              alignment=MainAxisAlignment.CENTER,
+                controls=[
+                  Divider(height=25, color="transparent"),
+                  Container(
+                    #border=border.all(6, colors.RED_600),
+                    padding = padding.only(top=-5,bottom=-30),
+                    #border=border.all(5, colors.BLUE_600),
+                    bgcolor="transparent",
+                    width=450,
+                    height=300,
+                    #padding=padding.only(),
+                    content=Image(
+                        src='assets/images/recurso_6_forwh.png', #Picture one ob
+                        scale=1.2,
+                        width=100,
+                        height=100,
+                    )
+                  ),
+                  Divider(height=30,color="transparent"), 
+                  
+                  Container(
+                    padding=padding.only(left=25, right=25),
+                    content=Text(
+                      "Crea tu cuenta de ",
+                      disabled=False,
                       font_family='Poppins Bold',
-                      #text_align=TextAlign.CENTER,
-                      size=28,
+                      overflow=TextOverflow.VISIBLE,
                       #max_lines=2,
+                      size=30,
                       text_align="center",
+                      spans=[
+                        TextSpan(" "),
+                        TextSpan(
+                          "CryDiagnoHealth",
+                          TextStyle(decoration=TextDecoration.NONE, font_family='ChauPhilomeneOne Regular', size=37),
+                          #on_click=lambda _: self.page.go('/terms'), #this work to going next page only
+                          #on_click=terms_open_dlg,
+                          on_enter=terms_highlight_link,
+                          on_exit=terms_unhighlight_link,
+                        ),
+                        TextSpan(".")
+                      ],
                     ),
-                    Divider(height=10, color="transparent"),
+                  ),
+                  #Divider(height=0, color="transparent"),
+                  Container(
                     Text(
                       #expand=True,
-                      width=600,
-                      value="únete a nuestra comunidad para contribuir al cuidado de la salud infantil. Registrate y comienza a grabar llantos para un diagnóstico temprano y preciso.",
+                      width=550,
+                      value="Únete a nuestra comunidad para contribuir al cuidado de la salud infantil. Registrate y comienza a grabar llantos para un diagnóstico temprano y preciso.",
                       font_family='Poppins SemiBold',
-                      #text_align=TextAlign.CENTER,
-                      size=14,
-                      #max_lines=4,
-                      text_align="center",
-                    ),
-                    Container(
-                      height=40
-                    ),
+                      size=15,
+                      text_align=TextAlign.CENTER,
+                    ), margin=margin.only(left=20, right=20),
+                  ),
+                  Container(
+                    height=35
+                  ),
 
-                    Container(
-                      on_click=lambda e: self.go_to_signup(),
-                      height=44,
-                      width=307,
-                      border_radius=25,
-                      bgcolor=base_color,
-                      alignment=alignment.center,
-                      content= Text('Sign Up',
-                      font_family='Poppins SemiBold',
-                      size=14,
-                      color='white',
-                      text_align='center'
-                      ),
+                  Container(
+                    margin=margin.only(left=20, right=20), 
+                    on_click=lambda e: self.go_to_signup(),
+                    height=55,
+                    width=450,
+                    border_radius=25,
+                    bgcolor=base_color,
+                    alignment=alignment.center,
+                    content= Text('Sign Up',
+                    font_family='Poppins SemiBold',
+                    size=14,
+                    color='white',
+                    text_align='center'
                     ),
-                    Divider(height=10, color="transparent"),
-                    Container(
-                      on_click=lambda e: self.go_to_login(),
-                      height=44,
-                      width=307,
-                      border_radius=25,
-                      border=border.all(4, base_color),
-                      bgcolor="transparent",
-                      alignment=alignment.center,
-                      content= Text('Log In',
-                      font_family='Poppins SemiBold',
-                      size=14,
-                      color=base_color,
-                      text_align='center'
-                      ),
+                  ),
+                  #Divider(height=2, color="transparent"),
+                  Container(
+                    margin=margin.only(left=20, right=20), 
+                    on_click=lambda e: self.go_to_login(),
+                    height=55,
+                    width=450,
+                    border_radius=25,
+                    border=border.all(3.5, base_color),
+                    bgcolor="transparent",
+                    alignment=alignment.center,
+                    content= Text('Log In',
+                    font_family='Poppins SemiBold',
+                    size=14,
+                    color=base_color,
+                    text_align='center'
                     ),
+                  ),
 
-                    Container(
-                      height=50
-                    ),
-                    Container(
-                      content=Text(
-                        "Para continuar estas aceptando nuestros",
-                        disabled=False,
-                        max_lines=2,
-                        text_align='center',
-                        spans=[
-                          TextSpan(" "),
-                          TextSpan(
-                            "Terminos del Servicio",
-                            TextStyle(decoration=TextDecoration.UNDERLINE),
-                            #on_click=lambda _: self.page.go('/terms'), #this work to going next page only
+                  Container(
+                    height=50
+                  ),
+                  Container(
+                    padding=padding.only(left=25, right=25),
+                    content=Text(
+                      "Para continuar estas aceptando nuestros",
+                      disabled=False,
+                      #max_lines=2,
+                      text_align='center',
+                      spans=[
+                        TextSpan(" "),
+                        TextSpan(
+                          "Terminos del Servicio",
+                          TextStyle(decoration=TextDecoration.UNDERLINE),
+                          #on_click=lambda _: self.page.go('/terms'), #this work to going next page only
 
-                            on_click=terms_open_dlg,
-                            #url="https://google.com",
-                            on_enter=terms_highlight_link,
-                            on_exit=terms_unhighlight_link,
-                        
-                        #Events type examples for print in console
-                            #on_click=lambda e: print(f"Clicked span: {e.control.uid}"),
-                            #on_enter=lambda e: print(f"Estoy encima de terminos y condiciones: {e.control.uid}"),
-                            #on_exit=lambda e: print(f"Estoy fuera de terminos y condiciones: {e.control.uid}"),
-                          ),
-                          TextSpan(" "),
-                          TextSpan("y nuestras"),
-                          TextSpan(" "),
-                          TextSpan(
-                            "Politicas de Privacidad",
-                            TextStyle(decoration=TextDecoration.UNDERLINE),
-                            on_click=lambda _: self.page.go('/policy'),
-                            #url="https://google.com",
-                            on_enter=policy_highlight_link,
-                            on_exit=policy_unhighlight_link,
-                          ),
-                          TextSpan(".")
-                        #   TextSpan(" "),
-                        #   TextSpan(" "),
-                        ],
-                      ),
+                          on_click=terms_open_dlg,
+                          #url="https://google.com",
+                          on_enter=terms_highlight_link,
+                          on_exit=terms_unhighlight_link,
+                      
+                      #Events type examples for print in console
+                          #on_click=lambda e: print(f"Clicked span: {e.control.uid}"),
+                          #on_enter=lambda e: print(f"Estoy encima de terminos y condiciones: {e.control.uid}"),
+                          #on_exit=lambda e: print(f"Estoy fuera de terminos y condiciones: {e.control.uid}"),
+                        ),
+                        TextSpan(" "),
+                        TextSpan("y nuestras"),
+                        TextSpan(" "),
+                        TextSpan(
+                          "Politicas de Privacidad",
+                          TextStyle(decoration=TextDecoration.UNDERLINE),
+                          on_click=policy_open_dlg,
+                          on_enter=policy_highlight_link,
+                          on_exit=policy_unhighlight_link,
+                        ),
+                        TextSpan(".")
+                      ],
                     ),
-                    Divider(height=50, color="transparent"),
-                      # color='#3797EF',
-                      # font_family='SF Pro SemiBold',
-                      # size=14,
-                      # text_align='center'
-                      # ),),
-                      # controls=[
-                      #   Text("Don't have an account?",
-                      #     color='black',
-                      #     font_family='SF Pro SemiBold',
-                      #     size=12,
-                      #     text_align='center',
-                      #     opacity=0.4
-                      #     ),Container(
-                      #         width=6
-                      #       ),
-                      #   Container(
-                      #     on_click = lambda _: self.pg.go('/signup'),
-                      #     content=Text("Sign up.",
-                      #     color='#262626',
-                      #     font_family='SF Pro SemiBold',
-                      #     size=14,
-                      #     text_align='center',
-                      #     ),
-                      #   )
-                      # ]
-                    ]
-                  )
+                  ),
+                  Divider(height=20, color="transparent"),
+                ]
               )
             ]
           )
         )
       ]
     )
-  # only for confirm or degree
-  # async def close_dlg(e):
-  #   e.dlg_modal.open = False
-  #   e.control.page.update_async
-
-  #ElevatedButton("Open dialog", on_click=open_dlg),
