@@ -4,11 +4,26 @@ from utils.extras import *
 
 def main(page: Page):
 
+  page.title = "Welcome to CryDiagnoHealth" #Title Page
+  # page.horizontal_alignment = CrossAxisAlignment.CENTER
+  # page.scroll = ScrollMode.ADAPTIVE
+  # page.update()
+  
   def route_change(route):
     page.views.clear()
     page.views.append(
       views_handler(page)[page.route]
     )
+    page.views[0].scroll = ScrollMode.HIDDEN
+    page.views[0].horizontal_alignment = CrossAxisAlignment.CENTER
+    page.views[0].vertical_alignment = MainAxisAlignment.CENTER
+    #scroll=ScrollMode.HIDDEN,
+    page.update()
+
+    page.title = "Welcome to CryDiagnoHealth" #Title Page
+    page.horizontal_alignment = CrossAxisAlignment.CENTER
+    page.scroll = ScrollMode.ADAPTIVE
+    page.update()
 
     page.theme_mode = ThemeMode.LIGHT #Switch the dark ver to deep-purple
     #page.theme_mode = ThemeMode.SYSTEM 
@@ -18,11 +33,6 @@ def main(page: Page):
     page.window_title_bar_buttons_hidden = True
     page.bgcolor = colors.TRANSPARENT
     page.window_bgcolor = colors.TRANSPARENT
-    page.window_min_height = 300
-    page.scroll = "auto"
-    
-    page.window_width = 840
-    page.window_height = 940
 
     page.fonts = {
     "Poppins ThinItalic":"fonts/poppins/Poppins/ThimnItalic.ttf",
@@ -66,4 +76,4 @@ def main(page: Page):
   # page.go('/login')
   # page.go('/profile')
 
-app(target=main,  assets_dir="assets")
+app(target=main, port=8550, assets_dir="assets")
