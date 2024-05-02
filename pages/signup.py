@@ -8,7 +8,7 @@ class SignupScreen(UserControl):
     super().__init__()
     self.page = page
 
-    page.title = "Welcome to CryDiagnoHealth" #Title Page
+    page.title = "SignIn Authentication" #Title Page
     #page.window_width = base_width
     #page.window_height = base_height
     page.fonts = { #fonts
@@ -16,77 +16,179 @@ class SignupScreen(UserControl):
         "Poppins SemiBold":"fonts/poppins/Poppins-SemiBold.ttf",
         "ChauPhilomeneOne Regular":"fonts/ChauPhilomeneOne/ChauPhilomeneOne-Regular.ttf",
         "ChauPhilomeneOne Italic":"fonts/ChauPhilomeneOne/ChauPhilomeneOne-Italic.ttf"
-    } 
+    }
 
 
   # Main function - - - 
   def build(self):
     return Column(
+      tight=20,
+      #vertical_alignment=CrossAxisAlignment.START,
+      horizontal_alignment=CrossAxisAlignment.CENTER,
+      #alignment=MainAxisAlignment.SPACE_BETWEEN,
+      alignment=MainAxisAlignment.START,
       controls=[
         SafeArea(
+          minimum = None,          
           content=Column(
+            alignment=MainAxisAlignment.START,
+            expand=True,
             spacing=0,
-            auto_scroll=False,
-            scroll=ScrollMode.HIDDEN,
-            alignment="spaceBetween",
-
-            # alignment=MainAxisAlignment.CENTER,
-            horizontal_alignment='center',
             controls=[
-
-              Text(
-              " Fecha de la Última Actualización: [11 - 02 - 2024] .",
-                font_family="Poppins Bold",
-                size=14,
-                bgcolor=base_color,
-                color=input_fill_color,
-              ),
-              Divider(height=10,color="TRANSPARENT", thickness=1),
-              Text(
-                  text_align='JUSTIFY',
-                  spans=[
-                    TextSpan(
-                      "Bienvenido/a a",
-                      TextStyle(font_family="Poppins SemiBold"),                  
-                      spans=[
-                        TextSpan(
-                        " CryDiagnoHealth ",
-                        TextStyle(font_family="ChauPhilomeneOne Regular", size=18),
+              Column(
+              #margin=margin.only(top=-20,left=-20,right=-20),
+              horizontal_alignment=CrossAxisAlignment.CENTER, # Text on top boarding      
+              alignment=MainAxisAlignment.START,
+                controls=[
+                  #Divider(heig
+                  # ht=25, color="transparent"),
+                  Container(
+                    Stack(
+                      [
+                        Container(
+                          #top=20,
+                          border=border.all(6, colors.YELLOW_600),
+                          width=650,
+                          height=1000,
+                          bgcolor="transparent",
                         ),
-                        TextSpan(
-                          ", una aplicación móvil diseñada para ayudar en la detección temprana de enfermedades patológicas en bebés a través del análisis de grabaciones de llanto. Antes de continuar utilizando nuestra aplicación, te pedimos que leas detenidamente estos términos del servicio. Al acceder y utilizar nuestra aplicación, aceptas cumplir con estos términos. Si no estás de acuerdo con alguno de estos términos, te recomendamos que dejes de usar la aplicación de inmediato.",
-                          TextStyle(font_family="Poppins SemiBold"),
+                        Container(
+                          alignment=alignment.top_center,
+                          border=border.all(6, colors.YELLOW_600),
+                          bgcolor="transparent",
+                          width=650,
+                          height=377,
+                          content=Image(
+                            src='assets/images/ON_signIn_flot_under_complet.png',
+                            scale=1,
+                            width='auto',
+                            height='auto',
+                          ),
                         ),
+                        # Column(
+                        #   controls=[
+                        #     Container(
+                        #       Stack(
+                        #         [
+                        #           Container(
+                        #             width=40,
+                        #             height=40,
+                        #             left=30,
+                        #             right=30,
+                        #             alignment=alignment.center,
+                        #             border=border.all(6,colors.LIGHT_BLUE_ACCENT_400)
+                        #           ),
+                        #         ]
+                        #       ),
+                        #       width=400,
+                        #       height=400,
+                        #     )
+                        #   ]
+                        # ),
+                        Container(
+                          #alignment=alignment.bottom_left,
+                           #fit='PASS_THROUGH',
+                          # bgcolor="transparent",
+                          # width=650,
+                          #alignment=alignment.top_center,
+                          #margin=margin.only(top=340),
+                          bgcolor="#CCe9e9e9",
+                          height=44,
+                          width=343,
+                          left=30,
+                          right=30,
+                          border=border.all(color='#1A000000',width=0.5,),
+                          border_radius=5,
+                          content=TextField(
+                            border=InputBorder.NONE,
+                            color='#C4A6A6',
+                            height=40,
+                            width=300,
+                            hint_text='Username',
+                            hint_style=TextStyle(
+                              color='#33000000',
+                              font_family='SF Pro Regula',
+                            ),
+                          ),
+                        ),
+                        # Container(
+                        #   border=border.all(6, colors.RED_600),
+                        #   alignment=alignment.top_center,
+                        #   #padding=padding.only(top=-5,bottom=-30),
+                        #   bgcolor="transparent",
+                        #   width=650,
+                        #   height=377,
+                        #   #margin=margin.only(top=150),
+                        #   content=Image(
+                        #     src='assets/images/ON_signIn_flot_under.png',
+                        #     scale=1,
+                        #     width='auto',
+                        #     height='auto',
+                        #   ),
+                        # ),
+                        # Container(
+                        #   alignment=alignment.top_center,
+                        #   #border_radius.only(top=20),
+                        #   border_radius= border_radius.only(top_left=40,top_right=40),
+                        #   width=600,
+                        #   height=400,
+                        #   #bgcolor=input_fill_color,s
+                        #   bgcolor="#f23fff",
+                        #   top=260,
+                        # ),
                       ],
-                    )
-                  ],
-              ),
+                      #top=0,
+                    ),
+                    width=600,
+                    alignment=alignment.top_center,
+                    #image_src='assets/images/solid_basecolor.png',
+                    #margin=margin.only(top=-20,left=-20,right=-20),
+                    border=border.all(6, colors.RED_600),
+                    ),
+                #   Divider(height=25, color="transparent"),
+                #   Container(
+                #     content=Row(
+                #       controls=[
+                #         Container(
+                #           bgcolor="transparent",
+                #           width=450,
+                #           height=300,
+                #           content=Text(
+                #             '¡Bienvenido!',
+                #             font_family="Poppins Bold",
+                #             size=18,
+                #             color=base_color,
+                #             #text_align='START',
+                #             text_align=TextAlign.LEFT,
+                #           )
+                #         )
+                #       ]
+                #     )
+                #   ),
+                #   Container(
+                #   alignment=alignment.center,
+                #   padding=padding.only(bottom=6),
+                #   bgcolor="#CCe9e9e9",
+                #   height=44,
+                #   width=343,
+                #   border=border.all(color='#1A000000',width=0.5,),
+                #   border_radius=5,
+                #   content=TextField(
+                #     border=InputBorder.NONE,
+                #     color='#262626',
+                #     height=40,
+                #     width=300,
+                #     hint_text='Username',
+                #     hint_style=TextStyle(
+                #       color='#33000000',
+                #       font_family='SF Pro Regula',
+                #     ),
+                #   )
+                # ),
 
-              Divider(height=25,color=base_color),
-              Text(
-                "1. Uso de la Aplicación:",
-                  font_family="Poppins Bold",
-                  size=16,
-                ),
-              Text(
-                  text_align='JUSTIFY',
-                  #theme_style=TextThemeStyle.BODY_SMALL,
-                  spans=[
-                  TextSpan(" "),
-                  TextSpan(
-                    "• La aplicación",
-                    TextStyle(font_family="Poppins SemiBold"),
-                  ),
-                  TextSpan(
-                    " CryDiagnoHealth ",
-                    TextStyle(font_family="ChauPhilomeneOne Regular", size=18),
-                  ),
-                  TextSpan(
-                    "está destinada únicamente para uso personal y no comercial. No está permitido utilizar la aplicación para ningún propósito ilegal o no autorizado.",
-                    TextStyle(font_family="Poppins SemiBold"),
-                  ),
-                  ]
-              ),
+
+
+
 
               # Container(padding=padding.only(left=18,top=25),
               #   content=Row(
@@ -275,6 +377,8 @@ class SignupScreen(UserControl):
               #         )
               #     ]
               #   ),
+                ]
+              )
             ]
           )
         ) 
