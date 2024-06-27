@@ -3,6 +3,17 @@ from utils.selectable_container import SelectableContainer
 from utils import back
 from utils.extras import *
 
+# Const firebase auth
+# const firebaseConfig = {
+#     apiKey: "AIzaSyC_vNk-ij4QogsXt2FGAqaf3gga0nBcYFk",
+#     authDomain: "cdhapp-appdevof.firebaseapp.com",
+#     projectId: "cdhapp-appdevof",
+#     storageBucket: "cdhapp-appdevof.appspot.com",
+#     messagingSenderId: "656390134432",
+#     appId: "1:656390134432:web:1a02b9c0bdbe121ad407c5"
+#   };
+
+
 class LoggedOutScreen(UserControl):
   def __init__(self, page: Page):
     super().__init__()
@@ -527,26 +538,26 @@ class LoggedOutScreen(UserControl):
               horizontal_alignment=CrossAxisAlignment.CENTER, # Text on top boarding      
               alignment=MainAxisAlignment.CENTER,
                 controls=[
-                  Divider(height=25, color="transparent"),
+                  #Divider(height=0, color="transparent"),
                   Container(
                     #border=border.all(6, colors.RED_600),
-                    padding = padding.only(top=-5,bottom=-30),
+                    padding = padding.only(top=-25,bottom=-30),
                     #border=border.all(5, colors.BLUE_600),
                     bgcolor="transparent",
-                    width=450,
-                    height=300,
+                    width='auto', 
+                    height='auto',
+                    #right=30, left=30,
                     #padding=padding.only(),
                     content=Image(
                         src='assets/images/recurso_6_forwh.png', #Picture one ob
-                        scale=1.2,
-                        width=100,
-                        height=100,
+                        scale=1,
+                        width='auto',
+                        height='auto',
                     )
                   ),
-                  Divider(height=30,color="transparent"), 
-                  
+                  #Divider(height=0,color="transparent"), 
                   Container(
-                    padding=padding.only(left=25, right=25),
+                    padding=padding.only(left=25, right=25, top=-40),
                     content=Text(
                       "Crea tu cuenta de ",
                       disabled=False,
@@ -561,7 +572,7 @@ class LoggedOutScreen(UserControl):
                           "CryDiagnoHealth",
                           TextStyle(decoration=TextDecoration.NONE, font_family='ChauPhilomeneOne Regular', size=37),
                           #on_click=lambda _: self.page.go('/terms'), #this work to going next page only
-                          #on_click=terms_open_dlg,
+                          #on_click=terms_op en_dlg,
                           on_enter=terms_highlight_link,
                           on_exit=terms_unhighlight_link,
                         ),
@@ -592,7 +603,7 @@ class LoggedOutScreen(UserControl):
                     border_radius=25,
                     bgcolor=base_color,
                     alignment=alignment.center,
-                    content= Text('Sign Up',
+                    content= Text('Registrarse',
                     font_family='Poppins SemiBold',
                     size=14,
                     color='white',
@@ -609,7 +620,7 @@ class LoggedOutScreen(UserControl):
                     border=border.all(3.5, base_color),
                     bgcolor="transparent",
                     alignment=alignment.center,
-                    content= Text('Log In',
+                    content= Text('Iniciar Sesión',
                     font_family='Poppins SemiBold',
                     size=14,
                     color=base_color,
@@ -618,7 +629,7 @@ class LoggedOutScreen(UserControl):
                   ),
 
                   Container(
-                    height=50
+                    height=40
                   ),
                   Container(
                     padding=padding.only(left=25, right=25),

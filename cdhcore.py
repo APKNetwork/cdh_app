@@ -15,24 +15,24 @@ def main(page: Page):
       views_handler(page)[page.route]
     )
     page.views[0].scroll = ScrollMode.HIDDEN
+    page.views[0].auto_scroll = ScrollMode.ADAPTIVE
     page.views[0].horizontal_alignment = CrossAxisAlignment.CENTER
     page.views[0].vertical_alignment = MainAxisAlignment.CENTER
+    page.views[0].padding = 0
     #scroll=ScrollMode.HIDDEN,
-    page.update()
-
+    #page.views[0].update
+    page.theme_mode = ThemeMode.LIGHT #Switch the dark ver to deep-purple
     page.title = "Welcome to CryDiagnoHealth" #Title Page
     page.horizontal_alignment = CrossAxisAlignment.CENTER
     page.scroll = ScrollMode.ADAPTIVE
+
+    page.window.title_bar_hidden = False
+    page.window.frameless = False
+    page.window.title_bar_buttons_hidden = False
+    page.window.bgcolor = colors.TRANSPARENT
     page.update()
-
-    page.theme_mode = ThemeMode.LIGHT #Switch the dark ver to deep-purple
     #page.theme_mode = ThemeMode.SYSTEM 
-
-    page.window_title_bar_hidden = True
-    page.window_frameless = True
-    page.window_title_bar_buttons_hidden = True
-    page.bgcolor = colors.TRANSPARENT
-    page.window_bgcolor = colors.TRANSPARENT
+    #page.window.bgcolor = colors.TRANSPARENT
 
     page.fonts = {
     "Poppins ThinItalic":"fonts/poppins/Poppins/ThimnItalic.ttf",
