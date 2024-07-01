@@ -14,7 +14,7 @@ from utils.extras import *
 #   };
 
 
-class LoggedOutScreen(UserControl):
+class LoggedOutScreen(Container):
   def __init__(self, page: Page):
     super().__init__()
     self.page = page
@@ -31,22 +31,7 @@ class LoggedOutScreen(UserControl):
         "Poppins SemiBold":"fonts/poppins/Poppins-SemiBold.ttf",
         "ChauPhilomeneOne Regular":"fonts/ChauPhilomeneOne/ChauPhilomeneOne-Regular.ttf",
         "ChauPhilomeneOne Italic":"fonts/ChauPhilomeneOne/ChauPhilomeneOne-Italic.ttf"
-    } 
-
-    #page.window_min_height = 600
-    #page.scroll = "adaptative"
-
-  def go_to_login(self):
-    self.page.go('/login')
-    back.back_ = '/'
-  print("estoy en logged_out mandado por onboardings")
-
-  def go_to_signup(self):
-    self.page.go('/signup')
-    back.back_ = '/'
-
-  #Main function - - -
-  def build(self):
+    }
 
     #Funcions for terms and privacy
     def close_dlg(e):
@@ -92,7 +77,7 @@ class LoggedOutScreen(UserControl):
             ),
             Divider(height=10,color="TRANSPARENT", thickness=1),
             Text(
-               text_align='JUSTIFY',
+                text_align='JUSTIFY',
                 spans=[
                   TextSpan(
                     "Bienvenido/a a",
@@ -350,7 +335,7 @@ class LoggedOutScreen(UserControl):
             ),
             Divider(height=10,color="TRANSPARENT", thickness=1),
             Text(
-               text_align='JUSTIFY',
+                text_align='JUSTIFY',
                 spans=[
                   TextSpan(
                     "Gracias por confiar en",
@@ -496,15 +481,17 @@ class LoggedOutScreen(UserControl):
     )
 
     # Set route for open and close dialogs for terms and policy
-    def terms_open_dlg(e):
-        self.page.dialog = dlg_modal_terms
-        dlg_modal_terms.open = True
-        self.page.update()
+
+    # D E P R E C A T E D  - - -  on ver. 0.21.0 flet
+    # def terms_open_dlg(e):
+    #     self.page.dialog = dlg_modal_terms
+    #     dlg_modal_terms.open = True
+    #     self.page.update()
     
-    def policy_open_dlg(e):
-        self.page.dialog = dlg_modal_policy
-        dlg_modal_policy.open = True
-        self.page.update()
+    # def policy_open_dlg(e):
+    #     self.page.dialog = dlg_modal_policy
+    #     dlg_modal_policy.open = True
+    #     self.page.update()
 
     # Set highlight and unhighlight of terms
     def terms_highlight_link(e):
@@ -515,19 +502,20 @@ class LoggedOutScreen(UserControl):
     def terms_unhighlight_link(e):
       e.control.style.color = base_color
       e.control.update()
- 
+
     # Set highlight and unhighlight of policy
     def policy_highlight_link(e):
-        # For lighnight
-        e.control.style.color = selected_item
-        e.control.update()
+      # For lighnight
+      e.control.style.color = selected_item
+      e.control.update()
 
     def policy_unhighlight_link(e):
-        e.control.style.color = base_color
-        e.control.update()
+      e.control.style.color = base_color
+      e.control.update()
 
-    return Column(
-      controls=[
+
+    self.content = Column(
+       controls=[
         SafeArea(
           #expand=True,
           content=Column(
@@ -549,7 +537,7 @@ class LoggedOutScreen(UserControl):
                     #right=30, left=30,
                     #padding=padding.only(),
                     content=Image(
-                        src='assets/images/recurso_6_forwh.png', #Picture one ob
+                        src='/images/recurso_6_forwh.png', #Picture one ob
                         scale=1,
                         width='auto',
                         height='auto',
@@ -573,8 +561,8 @@ class LoggedOutScreen(UserControl):
                           TextStyle(decoration=TextDecoration.NONE, font_family='ChauPhilomeneOne Regular', size=37),
                           #on_click=lambda _: self.page.go('/terms'), #this work to going next page only
                           #on_click=terms_op en_dlg,
-                          on_enter=terms_highlight_link,
-                          on_exit=terms_unhighlight_link,
+                          on_enter=lambda e: terms_highlight_link(e),
+                          on_exit=lambda e: terms_unhighlight_link(e),
                         ),
                         TextSpan(".")
                       ],
@@ -645,10 +633,10 @@ class LoggedOutScreen(UserControl):
                           TextStyle(decoration=TextDecoration.UNDERLINE),
                           #on_click=lambda _: self.page.go('/terms'), #this work to going next page only
 
-                          on_click=terms_open_dlg,
+                          on_click=lambda e: page.open(dlg_modal_terms),
                           #url="https://google.com",
-                          on_enter=terms_highlight_link,
-                          on_exit=terms_unhighlight_link,
+                          on_enter=lambda e: terms_highlight_link(e),
+                          on_exit=lambda e: terms_unhighlight_link(e),
                       
                       #Events type examples for print in console
                           #on_click=lambda e: print(f"Clicked span: {e.control.uid}"),
@@ -661,19 +649,35 @@ class LoggedOutScreen(UserControl):
                         TextSpan(
                           "Politicas de Privacidad",
                           TextStyle(decoration=TextDecoration.UNDERLINE),
-                          on_click=policy_open_dlg,
-                          on_enter=policy_highlight_link,
-                          on_exit=policy_unhighlight_link,
+                          on_click=lambda e: page.open(dlg_modal_policy),
+                          on_enter=lambda e: policy_highlight_link(e),
+                          on_exit=lambda e: policy_unhighlight_link(e),
                         ),
                         TextSpan(".")
                       ],
                     ),
                   ),
-                  Divider(height=20, color="transparent"),
+                  #Divider(height=20, color="transparent"),
+                  Row(
+                     height=40,
+                     opacity=0,
+                  )
                 ]
               )
             ]
           )
         )
       ]
-    )
+    ) 
+
+    #page.window_min_height = 600
+    #page.scroll = "adaptative"
+
+  def go_to_login(self):
+    self.page.go('/login')
+    back.back_ = '/'
+  print("estoy en logged_out mandado por onboardings")
+
+  def go_to_signup(self):
+    self.page.go('/signup')
+    back.back_ = '/'

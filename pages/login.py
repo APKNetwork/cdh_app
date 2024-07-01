@@ -48,7 +48,7 @@ class LoginScreen(UserControl):
                           height=300,
                           content=Image(
                             #src='assets/images/reg_flot_1_forwh.png',
-                            src='assets/images/ON_Login_flot_under.png',
+                            src='/images/ON_Login_flot_under.png',
                             scale=1.2,
                             width=100,
                             height=100,
@@ -59,7 +59,7 @@ class LoginScreen(UserControl):
                     width=650,
                     height=377,
                     #bgcolor=base_color,
-                    image_src='assets/images/ON_Login_flot.png',
+                    image_src='/images/ON_Login_flot.png',
                     #margin=margin.only(left=-20,right=-20,top=-20),
                   ),
                   Divider(height=25, color="transparent"),
