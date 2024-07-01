@@ -1,6 +1,5 @@
 from flet import *
 # from utils.selectable_container import SelectableContainer
-from utils.base import BasePage as BP
 from utils import back
 from utils.extras import *
 
@@ -51,7 +50,7 @@ onboarding_button = Row( #Put the buttons separated
 )
 
 # Main class to re-direction views
-class secondOnboardingScreen(UserControl):
+class secondOnboardingScreen(Container):
   def __init__(self, page: Page):
     super().__init__()
     self.page = page
@@ -104,104 +103,116 @@ class secondOnboardingScreen(UserControl):
           on_click=lambda _: self.page.go('/thirdOnboarding'),
       )
     )  
+
     page.update()
+
+    self.content = Column(
+      controls=[
+        SafeArea( #returning to the initapp
+          #expand=True,
+          content=Column(
+            alignment="spaceBetween",
+            spacing=0,
+            controls=[
+                Column(              
+                  # - - wrap=True, # Wrap to the over posit ion
+                  #run_spacing=-15, #Espacio de separacion al hacer WRAPPING
+                  # - - spacing=0, #Espacio entre Container
+                  horizontal_alignment=CrossAxisAlignment.CENTER, # Text on top boarding      
+                  alignment=MainAxisAlignment.CENTER,
+                  controls=[
+                    Divider(height=0, color="transparent"),
+                    #Text on top - - -
+                    #Image positions 
+                    Row(
+                      width=480,
+                      alignment=MainAxisAlignment.CENTER,
+                      controls=[
+                        Container(
+                            expand=True,
+                            content=Image(
+                                src='/images/recurso_4_forwh.png', #Picture one ob
+                                scale=1.1,
+                            ),
+                            padding=padding.only(top=-5),
+                          )
+                        ]
+                    ),
+                    Divider(height=4, color="transparent"),
+                    Container( #Generating lines dashed for scroll
+                        padding=padding.only(),
+                        height=28,
+                        alignment=alignment.top_center,
+                        #border=border.all(2, colors.GREEN_600),
+                        content=onboarding_button, # The slider - - -
+                    ),
+                    Divider(height=12, color="transparent"),
+                    Container(
+                        Text(
+                            value="Detección temprana de posibles patologías.",
+                            font_family='Poppins SemiBold',
+                            #text_align=TextAlign.CENTER,
+                            size=26,
+                            text_align="center",
+                        ),
+                        padding=padding.only(top=-30),
+                        margin=margin.only(left=20, right=20),
+                        height="auto",
+                        width=450,
+                        alignment=alignment.bottom_center,
+                        #border=border.all(4, colors.PURPLE_600),
+                    ),
+                    #Divider(height=5, color="transparent"),
+                    Container(
+                        Text(
+                            value="Contribuye a un diagnóstico oportuno a tavés del análisis de los llantos del bebé.",
+                            font_family='Poppins SemiBold',
+                            #text_align=TextAlign.CENTER,
+                            size=14,
+                            text_align="center",
+                        ),
+                        height="auto",
+                        margin=margin.only(left=20, right=20),
+                        width=450,
+                        alignment=alignment.top_center,
+                        #border=border.all(4, colors.YELLOW_600),
+                    ),
+                    Divider(height=19, color="transparent"),
+                    Row(
+                      width=480,
+                      height='auto',
+                      alignment=MainAxisAlignment.CENTER,
+                      controls=[
+                        Container(
+                        on_click=lambda e: self.switch_page(),
+                        border_radius=25,
+                        expand=True,
+                        bgcolor=base_color,
+                        alignment=alignment.center,
+                        content=Text('Siguiente',
+                          color='white',
+                          font_family='Poppins SemiBold',
+                          size=15,
+                          text_align='center'
+                          ),
+                        margin=margin.only(left=20, right=20),
+                        padding=padding.only(left=25, right=25, top=10, bottom=10),
+                        ),
+                      ],
+                    #padding=padding.only(bottom=20,left=45,right=45),
+                    ), 
+                    Row(
+                     height=40,
+                     opacity=0,
+                  )
+                  ],
+              ),
+            ]
+          )
+        )
+      ]   
+    )
 
   def switch_page(self):
     self.page.go('/thirdOnboarding')
     back.back_ = '/'
-
-  def build(self):
-    print("deberia estar ahorita mismo en onboarding 2")
-    return Column(
-      controls=[
-        BP(
-          SafeArea( #returning to the initapp
-            expand=True,
-            content=Column(
-              alignment="spaceBetween",
-              spacing=0,
-              controls=[
-                 Column(              
-                    # - - wrap=True, # Wrap to the over posit ion
-                    #run_spacing=-15, #Espacio de separacion al hacer WRAPPING
-                    # - - spacing=0, #Espacio entre Container
-                    horizontal_alignment=CrossAxisAlignment.CENTER, # Text on top boarding      
-                    alignment=MainAxisAlignment.CENTER,
-                    controls=[
-                      Divider(height=0, color="transparent"),
-                      #Text on top - - -
-                      #Image positions 
-                      Row(
-                        width=500,
-                        alignment=MainAxisAlignment.CENTER,
-                        controls=[
-                          Container(
-                              expand=True,
-                              content=Image(
-                                  src='assets/images/recurso_4_forwh.png', #Picture one ob
-                                  scale=1.2,
-                              )
-                            )
-                          ]
-                      ),
-                      Container( #Generating lines dashed for scroll
-                          padding=padding.only(),
-                          height=40,
-                          alignment=alignment.center,
-                          #border=border.all(2, colors.GREEN_600),
-                          content=onboarding_button, # The slider - - -
-                      ),
-                      Divider(height=30, color="transparent"),
-                      Container(
-                          Text(
-                              value="Detección temprana de posibles patologías.",
-                              font_family='Poppins SemiBold',
-                              #text_align=TextAlign.CENTER,
-                              size=26,
-                              text_align="center",
-                          ),
-                          height="auto",
-                          alignment=alignment.bottom_center,
-                          #border=border.all(4, colors.PURPLE_600),
-                      ),
-                      #Divider(height=5, color="transparent"),
-                      Container(
-                          Text(
-                              value="Contribuye a un diagnóstico oportuno a tavés del análisis de los llantos del bebé.",
-                              font_family='Poppins SemiBold',
-                              #text_align=TextAlign.CENTER,
-                              size=14,
-                              text_align="center",
-                          ),
-                          height="auto",
-                          alignment=alignment.top_center,
-                          #border=border.all(4, colors.YELLOW_600),
-                      ),
-                      Divider(height=60, color="transparent"),
-                      Row(
-                        controls=[
-                          Container(
-                          on_click=lambda e: self.switch_page(),
-                          border_radius=25,
-                          expand=True,
-                          bgcolor=base_color,
-                          alignment=alignment.center,
-                          content=Text('Siguiente',
-                            color='white',
-                            font_family='Poppins SemiBold',
-                            size=15,
-                            text_align='center'
-                            ),
-                          padding=padding.only(left=25, right=25, top=10, bottom=10),
-                          ),
-                        ], alignment="endBetween",
-                      #padding=padding.only(bottom=20,left=45,right=45),
-                      ), 
-                    ],
-                ),
-              ]
-            )
-          )
-        )
-      ]
-    )

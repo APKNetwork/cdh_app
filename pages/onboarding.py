@@ -1,6 +1,5 @@
 from flet import *
 # from utils.selectable_container import SelectableContainer
-from utils.base import BasePage as BP
 from utils import back
 from utils.extras import *
 
@@ -44,14 +43,13 @@ def changepage(e,i): #Def to the buttons apply
     #Clear all listdata
     pass
 
-
 onboarding_button = Row( #Put the buttons separated
     alignment=alignment.center,
     scroll='auto',
 )
 
 # Main class to re-direction views
-class OnboardingScreen(UserControl):
+class OnboardingScreen(Container):
   def __init__(self, page: Page):
     super().__init__()
     self.page = page
@@ -60,8 +58,8 @@ class OnboardingScreen(UserControl):
     #page.window_width = base_width
     #page.window_height = base_height
     page.fonts = { #fonts
-        "Poppins Bold":"fonts/poppins/Poppins-Bold.ttf",
-        "Poppins SemiBold":"fonts/poppins/Poppins-SemiBold.ttf"
+        "Poppins Bold":"/fonts/poppins/Poppins-Bold.ttf",
+        "Poppins SemiBold":"/fonts/poppins/Poppins-SemiBold.ttf"
     }
 
     #Selector to return a page onboarding
@@ -103,134 +101,152 @@ class OnboardingScreen(UserControl):
           padding= 15,
           on_click=lambda _: self.page.go('/thirdOnboarding'),
       )
-    )  
+    )
     page.update()
+
+    self.content = Column(
+       controls=[
+        SafeArea( #returning to the initapp
+          #expand=True,
+          content=Column(
+            alignment="spaceBetween",
+            spacing=0,
+            controls=[
+                Column(
+                  horizontal_alignment=CrossAxisAlignment.CENTER, # Text on top boarding      
+                  alignment=MainAxisAlignment.CENTER,
+                  controls=[ 
+                  Divider(height=0, color="transparent"),
+                  #Text on top - - -
+                  Row(
+                    wrap=True, # Wrap to the over posit ion
+                    run_spacing=-15, #Espacio de separacion al hacer WRAPPING
+                    spacing=0, #Espacio entre Container
+                    alignment=MainAxisAlignment.CENTER,
+                    vertical_alignment=CrossAxisAlignment.CENTER, # Text on top boarding      
+                      controls=[
+                      Container(
+                        #border=border.all(4x, colors.PINK_600),
+                        content=Text(
+                          value=" Bienvenido a ",
+                          #text_align="left",
+                          text_align=TextAlign.START,
+                          font_family="Poppins Bold",
+                          size=22,
+                          max_lines=1,
+                        )
+                      ),
+                      Container(
+                        content=Image(
+                          src='/icons/iconbear_left_base_three_shadow.png',
+                          scale=1,
+                          width=155,
+                          fit=ImageFit.FILL,
+                        ),
+                      ),
+                    ]
+                  ),
+                  #Image positions
+                  Row(
+                      width=450,
+                      alignment=MainAxisAlignment.CENTER,
+                      controls=[
+                        Container(
+                        expand=True,
+                        #border=border.all(4, colors.PINK_600),
+                        content=Image(
+                            src='/images/recurso_2_forwh_1.png', #Picture one ob
+                            scale=1,
+                            #height=526,
+                            #fit=ImageFit.FIT_WIDTH,
+                            #expand=True,
+                        ),
+                        padding=padding.only(top=-20),
+                      )
+                      ]
+                  ),
+                  Divider(height=1, color="transparent"),
+                  Container( #Generating lines dashed for scroll
+                    #border=border.all(4, colors.GREEN_600),
+                    padding=padding.only(),
+                    height=28,
+                    width=450,
+                    alignment=alignment.top_center,
+                    #border=border.all(2, colors.GREEN_600),
+                    content=onboarding_button, # The slider - - -
+                  ),
+                  Divider(height=14, color="transparent"),
+                  Container(
+                      Text(
+                          value="Registra llantos de bebés con precisión.",
+                          font_family='Poppins SemiBold',
+                          #text_align=TextAlign.CENTER,
+                          size=26,
+                          text_align="center",
+                      ),
+                      padding=padding.only(top=-30),
+                      margin=margin.only(left=20, right=20),
+                      height="auto",
+                      width=450,
+                      alignment=alignment.bottom_center,
+                      #border=border.all(4, colors.PURPLE_600),
+                  ),
+                  #Divider(height=0, color="transparent"),
+                  Container(
+                      Text(
+                          value="Detecta y graba de manera clara y precisa los sonidos para un análisis efectivo.",
+                          font_family='Poppins SemiBold',
+                          #text_align=TextAlign.CENTER,
+                          size=14,
+                          text_align="center",
+                      ),
+                      #padding=padding.only(top=-30),
+                      margin=margin.only(left=20, right=20),
+                      height="auto",
+                      width=450,
+                      #border=border.all(5, colors.BLUE_600),
+                      alignment=alignment.top_center,
+                      #border=border.all(4, colors.YELLOW_600),
+                  ),
+                  Divider(height=15, color="transparent"),
+
+                  Row(
+                      width=480,
+                      height='auto',
+                      alignment=MainAxisAlignment.CENTER,
+                      controls=[
+                        Container(  
+                          width=450,                 
+                            on_click=lambda e: self.switch_page(),
+                            border_radius=25,
+                            expand=True,
+                            bgcolor=base_color,
+                            alignment=alignment.center,
+                            content=Text('Siguiente',
+                              color='white',
+                              font_family='Poppins SemiBold',
+                              size=15,
+                              text_align='center'
+                              ),
+                            margin=margin.only(left=20, right=20),
+                            padding=padding.only(left=25, right=25, top=10, bottom=10),
+                            ),
+                            Divider(height=30, color="transparent"),
+                      ],
+                  ),
+                  Row(
+                     height=40,
+                     opacity=0,
+                  )
+                ],
+              ),
+            ],
+          ),
+        )
+      ]
+    )
+
 
   def switch_page(self):
     self.page.go('/secondOnboarding')
     back.back_ = '/'
-
-  def build(self):
-    print("deberia estar ahorita mismo en onboarding uno")
-    return Column(
-      controls=[
-        BP(
-          SafeArea( #returning to the initapp
-            expand=True,
-            content=Column(
-              alignment="spaceBetween",
-              spacing=0,
-              controls=[
-                 Column(
-                    horizontal_alignment=CrossAxisAlignment.CENTER, # Text on top boarding      
-                    alignment=MainAxisAlignment.CENTER,
-                    controls=[ 
-                    Divider(height=0, color="transparent"),
-                    #Text on top - - -
-                    Row(
-                      wrap=True, # Wrap to the over posit ion
-                      run_spacing=-15, #Espacio de separacion al hacer WRAPPING
-                      spacing=0, #Espacio entre Container
-                      alignment=MainAxisAlignment.CENTER,
-                      vertical_alignment=CrossAxisAlignment.CENTER, # Text on top boarding      
-                        controls=[
-                        Container(
-                          #border=border.all(4x, colors.PINK_600),
-                          content=Text(
-                            value=" Bienvenido a ",
-                            #text_align="left",
-                            text_align=TextAlign.START,
-                            font_family='Poppins Bold',
-                            size=22,
-                            max_lines=1,
-                          )
-                        ),
-                        Container(
-                          content=Image(
-                            src='assets/icons/iconbear_left_base_three_shadow.png',
-                            scale=1,
-                            width=155,
-                            fit=ImageFit.FILL,
-                          ),
-                        ),
-                      ]
-                    ),
-                    #Image positions
-                    Row(
-                       width=500,
-                       alignment=MainAxisAlignment.CENTER,
-                       controls=[
-                          Container(
-                          expand=True,
-                          #border=border.all(4, colors.PINK_600),
-                          content=Image(
-                              src='ass ets/images/recurso_2_forwh.png', #Picture one ob
-                              scale=1.2,
-                              #expand=True,
-                          )
-                        )
-                       ]
-                    ),
-                    Container( #Generating lines dashed for scroll
-                        #border=border.all(4, colors.GREEN_600),
-                        padding=padding.only(),
-                        height=40,
-                        alignment=alignment.center,
-                        #border=border.all(2, colors.GREEN_600),
-                        content=onboarding_button, # The slider - - -
-                    ),
-                    Divider(height=15, color="transparent"),
-                    Container(
-                        Text(
-                            value="Registra llantos de bebés con precisión.",
-                            font_family='Poppins SemiBold',
-                            #text_align=TextAlign.CENTER,
-                            size=26,
-                            text_align="center",
-                        ),
-                        height="auto",
-                        alignment=alignment.bottom_center,
-                        #border=border.all(4, colors.PURPLE_600),
-                    ),
-                    #Divider(height=0, color="transparent"),
-                    Container(
-                        Text(
-                            value="Detecta y graba de manera clara y precisa los sonidos para un análisis efectivo.",
-                            font_family='Poppins SemiBold',
-                            #text_align=TextAlign.CENTER,
-                            size=14,
-                            text_align="center",
-                        ),
-                        height="auto",
-                        #border=border.all(5, colors.BLUE_600),
-                        alignment=alignment.top_center,
-                        #border=border.all(4, colors.YELLOW_600),
-                    ),
-                    Divider(height=40, color="transparent"),
-                  ],
-                ),
-                Row(
-                  controls=[
-                    Container(
-                    on_click=lambda e: self.switch_page(),
-                    border_radius=25,
-                    expand=True,
-                    bgcolor=base_color,
-                    alignment=alignment.center,
-                    content=Text('Siguiente',
-                      color='white',
-                      font_family='Poppins SemiBold',
-                      size=15,
-                      text_align='center'
-                      ),
-                    padding=padding.only(left=25, right=25, top=10, bottom=10),
-                    ),
-                  ], alignment="endBetween",
-                  #padding=padding.only(bottom=20,left=45,right=45),
-                ), 
-              ],
-            ),
-          )
-        )
-      ]
-    )

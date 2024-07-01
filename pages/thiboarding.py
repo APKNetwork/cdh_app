@@ -1,6 +1,5 @@
 from flet import *
 # from utils.selectable_container import SelectableContainer
-from utils.base import BasePage as BP
 from utils import back
 from utils.extras import *
 
@@ -51,7 +50,7 @@ onboarding_button = Row( #Put the buttons separated
 )
 
 # Main class to re-direction views
-class thirdOnboardingScreen(UserControl):
+class thirdOnboardingScreen(Container):
   def __init__(self, page: Page):
     super().__init__()
     self.page = page
@@ -106,17 +105,10 @@ class thirdOnboardingScreen(UserControl):
     )  
     page.update()
 
-  def switch_page(self):
-    self.page.go('/')
-    back.back_ = '/'
-
-  def build(self):
-    print("deberia estar ahorita mismo en onboarding 2")
-    return Column(
-      controls=[
-        BP(
+    self.content = Column(
+       controls=[
           SafeArea( #returning to the initapp
-            expand=True,
+            #expand=True,
             content=Column(
               alignment="spaceBetween",
               spacing=0,
@@ -129,7 +121,7 @@ class thirdOnboardingScreen(UserControl):
                     #Text on top - - -
                     #Image positions
                     Row(
-                      width=500,
+                      width=480,
                       alignment=MainAxisAlignment.CENTER,
                       controls=[
                         Container(
@@ -137,21 +129,22 @@ class thirdOnboardingScreen(UserControl):
                             expand=True,
                             #height=400,
                             content=Image(
-                                src='assets/images/may_menu_1_forwh.png', #Picture one ob
-                                scale=1.3,
-                            )
+                                src='/images/may_menu_1_forwh.png', #Picture one ob
+                                scale=1.1,
+                            ),
+                          padding=padding.only(top=-10),
                         ),
                       ]
                     ),
-                    #Divider(height=30, color="transparent"),
+                    Divider(height=8, color="transparent"),
                     Container( #Generating lines dashed for scroll
                         padding=padding.only(),
-                        height=40,
-                        alignment=alignment.center,
+                        height=28,
+                        alignment=alignment.top_center,
                         #border=border.all(2, colors.GREEN_600),
                         content=onboarding_button, # The slider - - -
                     ),
-                    Divider(height=30, color="transparent"),
+                    Divider(height=12, color="transparent"),
                     Container(
                         Text(
                           value="Navegación sencilla y amigable.",
@@ -160,7 +153,10 @@ class thirdOnboardingScreen(UserControl):
                           size=26,
                           text_align="center",
                       ),
+                      padding=padding.only(top=-30),
+                      margin=margin.only(left=20, right=20),
                       height="auto",
+                      width=450,
                       alignment=alignment.bottom_center,
                       #border=border.all(4, colors.PURPLE_600),
                     ),
@@ -174,34 +170,47 @@ class thirdOnboardingScreen(UserControl):
                           text_align="center",
                       ),
                         height="auto",
+                        margin=margin.only(left=20, right=20),
+                        width=450,
                         alignment=alignment.top_center,
                         #border=border.all(4, colors.YELLOW_600),
                     ),
-                    Divider(height=60, color="transparent"),
-                  ],
-                ),
-                Row(
-                  controls=[
-                    Container(
-                    on_click=lambda e: self.switch_page(),
-                    border_radius=25,
-                    expand=True,
-                    bgcolor=base_color,
-                    alignment=alignment.center,
-                    content=Text('¡Vamos!',
-                      color='white',
-                      font_family='Poppins SemiBold',
-                      size=15,
-                      text_align='center'
-                      ),
-                    padding=padding.only(left=25, right=25, top=10, bottom=10),
+                    Divider(height=21, color="transparent"),
+                    Row(
+                      width=480,
+                      height='auto',
+                      alignment=MainAxisAlignment.CENTER,
+                      controls=[
+                        Container(
+                        on_click=lambda e: self.switch_page(),
+                        border_radius=25,
+                        expand=True,
+                        bgcolor=base_color,
+                        alignment=alignment.center,
+                        content=Text('¡Vamos!',
+                          color='white',
+                          font_family='Poppins SemiBold',
+                          size=15,
+                          text_align='center'
+                          ),
+                        margin=margin.only(left=20, right=20),
+                        padding=padding.only(left=25, right=25, top=10, bottom=10),
+                        ),
+                      ],
+                      #padding=padding.only(bottom=20,left=45,right=45),
                     ),
-                  ], alignment="endBetween",
-                  #padding=padding.only(bottom=20,left=45,right=45),
+                    Row(
+                     height=40,
+                     opacity=0,
+                  )
+                  ],
                 ), 
               ],
             ),
           )
-        )
       ]
     )
+
+  def switch_page(self):
+    self.page.go('/')
+    back.back_ = '/'
