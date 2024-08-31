@@ -497,7 +497,6 @@ class SignupScreen(Container):
         try:
           #print("User:",usern,"email:",email,"password:",passw)
           myPyrebase.register_user(usern, email, passw)
-          #No imprime, ayuda.
           usern, email, passw = '', '', ''
           page.go('/home')
           page.update()

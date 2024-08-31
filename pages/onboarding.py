@@ -65,16 +65,16 @@ class OnboardingScreen(Container):
 
     # Detectar altura de la ventana para ajustar el layout
     screen_height = page.window.height
-    print("screen_height:",screen_height * 1.2)
+    #   - - -print("screen_height:",screen_height * 1.2)
     is_small_screen = screen_height * 1.2 < 600
     if not screen_height != 0:
        is_small_screen = False
-    print("is small screen",is_small_screen)
+    #   - - -print("is small screen",is_small_screen)
     
     # Ajustes condicionales
     column_alignment = MainAxisAlignment.SPACE_BETWEEN if not is_small_screen else MainAxisAlignment.START
     column_scroll_mode = ScrollMode.ALWAYS if is_small_screen else None
-    print("column_alig",column_alignment,"   and scrollmode",column_scroll_mode)
+    #   - - -print("column_alig",column_alignment,"   and scrollmode",column_scroll_mode)
     
     #Selector to return a page onboarding
     onboarding_button.controls.clear() #cleaning input

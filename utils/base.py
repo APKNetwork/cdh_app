@@ -4,12 +4,10 @@ from flet import *
 # D E P R E C A T E D only for onboarding pages 06/01/24
 #
 
-class BasePage(UserControl):
+class BasePage(Container):
   def __init__(self, content=None):
     super().__init__()
-    self.content = content
-  def build(self):
-    return Column(
+    self.content =  Column(
       #expand=True,
       scroll=ScrollMode.HIDDEN,
       #auto_scroll=True,
