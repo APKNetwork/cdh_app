@@ -51,7 +51,7 @@ onboarding_button = Row( #Put the buttons separated
 
 # Main class to re-direction views
 class thirdOnboardingScreen(Container):
-  def __init__(self, page: Page):
+  def __init__(self, page: Page, myPyrebase):
     super().__init__()
     self.page = page
 

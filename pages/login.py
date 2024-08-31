@@ -1,21 +1,24 @@
 from flet import *
-from utils import back
-from utils.selectable_container import SelectableContainer
-from utils.base import BasePage as BP
-
-from flet import *
 from utils.selectable_container import SelectableContainer
 from utils import back
 from utils.extras import *
+import re
 
-class LoginScreen(UserControl):
-  def __init__(self, page: Page):
+
+form1 = "False"
+form2 = "False"
+
+
+class LoginScreen(Container):
+  def __init__(self, page: Page, myPyrebase):
     super().__init__()
     self.page = page
 
-    page.title = "Inicia Sesión" #Title Page
-    #page.window_width = base_width
-    #page.window_height = base_height
+    page.title = "LogIn Authentication" #Title Page
+    page.horizontal_alignment = CrossAxisAlignment.CENTER
+    page.scroll = ScrollMode.ADAPTIVE
+    page.update()
+
     page.fonts = { #fonts
         "Poppins Bold":"fonts/poppins/Poppins-Bold.ttf",
         "Poppins SemiBold":"fonts/poppins/Poppins-SemiBold.ttf",
@@ -23,272 +26,320 @@ class LoginScreen(UserControl):
         "ChauPhilomeneOne Italic":"fonts/ChauPhilomeneOne/ChauPhilomeneOne-Italic.ttf"
     }
 
+    # Set highlight and unhighlight of terms
+    def signin_highlight_link(e):
+      # For lighnight
+      e.control.style.color = selected_item
+      e.control.update()
 
-  # Main function - - - 
-  def build(self):
-    return Column(
+    def signin_unhighlight_link(e):
+      e.control.style.color = base_color
+      e.control.update()
+
+    self.content = Column(
+      tight=20,
+      #vertical_alignment=CrossAxisAlignment.START,
+      horizontal_alignment=CrossAxisAlignment.CENTER,
+      #alignment=MainAxisAlignment.SPACE_BETWEEN,
+      alignment=MainAxisAlignment.START,
       controls=[
         SafeArea(
+          minimum = None,          
           content=Column(
-            alignment="spaceBetween",
+            alignment=MainAxisAlignment.START,
+            expand=True,
             spacing=0,
             controls=[
               Column(
+              #margin=margin.only(top=-20,left=-20,right=-20),
               horizontal_alignment=CrossAxisAlignment.CENTER, # Text on top boarding      
-              alignment=MainAxisAlignment.CENTER,
+              alignment=MainAxisAlignment.START,
                 controls=[
-                  #Divider(height=25, color="transparent"),
+                  #Template from SignUp
                   Container(
-                    Stack(
-                        [
-                         Container(
-                          padding=padding.only(top=-5,bottom=-30),
-                          bgcolor="transparent",
-                          width=450,
-                          height=300,
-                          content=Image(
-                            #src='assets/images/reg_flot_1_forwh.png',
-                            src='/images/ON_Login_flot_under.png',
-                            scale=1.2,
-                            width=100,
-                            height=100,
-                          ),
-                        ),
-                      ]
-                    ),
+                    alignment=alignment.top_center,
+                    #border=border.all(6, colors.BLUE_600),
+                    bgcolor="transparent",
                     width=650,
-                    height=377,
-                    #bgcolor=base_color,
-                    image_src='/images/ON_Login_flot.png',
-                    #margin=margin.only(left=-20,right=-20,top=-20),
+                    height='auto',
+                    content=Image(
+                      src=f'/images/ON_Login_flot_under_complet.png',
+                      scale=1,
+                      width='auto',
+                      height='auto',
+                    ),
                   ),
-                  Divider(height=25, color="transparent"),
+                  Divider(color='transparent',height=20),
+                  #Create an Account
                   Container(
-                    content=Row(
-                      controls=[
-                        Container(
-                          bgcolor="transparent",
-                          width=450,
-                          height=300,
-                          content=Text(
-                            '¡Bienvenido!',
-                            font_family="Poppins Bold",
-                            size=18,
-                            color=base_color,
-                            #text_align='START',
-                            text_align=TextAlign.LEFT,
-                          )
-                        )
-                      ]
+                    padding=padding.only(left=20, right=20),
+                    width='auto', 
+                    height='auto',
+                    content=Text(
+                      "¡Bienvenido de Nuevo!",
+                      text_align=TextAlign.CENTER,
+                      font_family='Poppins Bold',
+                      size=37,
+                      color=base_color,
+                      overflow=TextOverflow.VISIBLE,
                     )
                   ),
+                  Divider(color='transparent',height=11),
+
+
+                  #TextField Email
                   Container(
-                  alignment=alignment.center,
-                  padding=padding.only(bottom=6),
-                  bgcolor="#CCe9e9e9",
-                  height=44,
-                  width=343,
-                  border=border.all(color='#1A000000',width=0.5,),
-                  border_radius=5,
-                  content=TextField(
-                    border=InputBorder.NONE,
-                    color='#262626',
-                    height=40,
-                    width=300,
-                    hint_text='Username',
-                    hint_style=TextStyle(
-                      color='#33000000',
-                      font_family='SF Pro Regula',
+                    alignment=alignment.center,
+                    #margin=margin.only(top=340),
+                    bgcolor='transparent',
+                    height=75,
+                    width=390,
+                    padding=padding.only(left=25, right=25),
+                    border_radius=5,
+                    content=TextField(
+                      label="Correo Electrónico",
+                      height=77,
+                      width=390,
+                      text_size=14,
+                      color=base_color,
+                      bgcolor=filled_color_bg,
+                      cursor_color=base_color,
+                      selection_color=hint_base_color_plus_text,
+                      focused_bgcolor=filled_color_bg_plus,
+                      #border=border.all(color=base_color,width=1),
+                      focused_color=foreground_color,
+                      focused_border_width=3,
+                      filled=True,
+                      focused_border_color=foreground_color,
+                      
+                      border=InputBorder.NONE,
+                      multiline=False,
+                      #input_filter=InputFilter(allow=True, regex_string="[A-Z,a-z,0-9,.,@]", replacement_string=""),
+
+                      #Events
+                      on_focus=lambda e: self.textbox_changed_mail(e),
+                      on_blur=lambda e: self.textbox_changed_mail(e),
+                      on_change=lambda e: self.textbox_changed_mail(e),
+
+                      text_style=TextStyle(
+                        color=base_color,
+                        size=16,
+                        font_family='Poppins Bold'
+                      ),
+
+                      label_style=TextStyle(
+                        color=hint_base_color,
+                        size=14,
+                        font_family='Poppins SemiBold'
+                      ),
+                      #border=InputBorder.NONE,
+                      hint_text="Email",
+                      hint_style=TextStyle(
+                        color=hint_base_color,
+                        size=14,
+                        font_family='Poppins SemiBold'
+                      ),
                     ),
+                  ),
+                  Container(
+                    visible='True',
+                    bgcolor='transparent',
+                    alignment=alignment.center_left,
+                    padding=padding.only(left=25,right=25,top=-20),
+                    width='390', 
+                    height='auto',
+                    content=Column(
+                      controls=[
+                        Container(
+                          content=self.tMail,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Divider(color='transparent',height=3.5),
+
+
+                  #TextField Password
+                  Container(
+                    alignment=alignment.center,
+                    bgcolor='transparent',
+                    height=85,
+                    width=390,
+                    padding=padding.only(left=25, right=25),
+                    border_radius=5,
+                    content=TextField(
+                      label="Contraseña",
+                      height=80,
+                      width=390,
+                      text_size=14,
+                      color=base_color,
+                      bgcolor=filled_color_bg,
+                      cursor_color=base_color,
+                      selection_color=hint_base_color_plus_text,
+                      focused_bgcolor=filled_color_bg_plus,
+                      #border=border.all(color=base_color,width=1),
+                      focused_color=foreground_color,
+                      focused_border_width=3,
+                      filled=True,
+                      focused_border_color=foreground_color,
+
+                      #Events
+                      on_focus=lambda e: self.textbox_changed(e),
+                      on_change=lambda e: self.textbox_changed(e),
+                      on_blur=lambda e: self.textbox_shadow(e),
+
+                      password=True,
+                      border=InputBorder.NONE,
+                      multiline=False,
+                      #input_filter=InputFilter(allow=True, regex_string="[A-Z,a-z,0-9,!,#,$,%,&,',(,),*,+,-,.,/,:,;,<,=,>,,?,@,\,^,_,`,{,|,},~]", replacement_string=""),
+
+                      helper_text="8 caracteres como mínimo.",
+                      helper_style=TextStyle(
+                        color=hint_base_color,
+                        size=8,
+                        font_family='Poppins SemiBold'
+                      ),
+
+                      text_style=TextStyle(
+                        color=base_color,
+                        size=16,
+                        font_family='Poppins Bold'
+                      ),
+                      can_reveal_password=True,
+                      label_style=TextStyle(
+                        color=hint_base_color,
+                        size=14,
+                        font_family='Poppins SemiBold'
+                      ),
+                      #border=InputBorder.NONE,
+                      hint_text="Password",
+                      hint_style=TextStyle(
+                        color=hint_base_color,
+                        size=14,
+                        font_family='Poppins SemiBold'
+                      ),
+                    ),
+                  ),
+                  Container(
+                      visible='True',
+                      bgcolor='transparent',
+                      alignment=alignment.top_left,
+                      padding=padding.only(left=25,right=25,top=-5),
+                      #margin=margin.only(bottom=-15),
+                      width='390', 
+                      content=self.tM,
+                  ),
+                  Container(
+                    alignment=alignment.top_left,
+                    padding=padding.only(left=25,right=25),
+                    width='390',
+                    content=self.containerofocult,
+                  ),
+                  Divider(color="transparent", height=6),
+                  
+                  #for Register
+                  Container(
+                    margin=margin.only(left=20, right=20), 
+                    padding=padding.only(left=25, right=25),
+                    # on_click=lambda e: self.go_to_valid(),
+                    on_click=lambda e: login_user(e),
+                    height=50,
+                    width=340,
+                    border_radius=25,
+                    bgcolor=base_color,
+                    alignment=alignment.center,
+                    content= Text('Iniciar Sesión',
+                    font_family='Poppins SemiBold',
+                    size=14,
+                    color='white',
+                    text_align='center'
+                    ),
+                  ),
+                  Divider(color="transparent", height=5),
+                  #Txt for register
+                  Container(
+                    visible='True',
+                    bgcolor='transparent',
+                    alignment=alignment.center_left,
+                    padding=padding.only(left=25,right=25,top=-15),
+                    width='390', 
+                    height='auto',
+                    content=Column(
+                      controls=[
+                        Container(
+                          content=self.tValform,
+                        ),
+                      ],
+                    ),
+                  ),
+
+
+                  #Dou you forgot password?
+                  Container(
+                    padding=padding.only(left=20, right=20),
+                    content=Text(
+                      " ",
+                      disabled=False,
+                      #max_lines=2,
+                      text_align='center',
+                      spans=[
+                        TextSpan(""),
+                        TextSpan(
+                          "¿Olvidaste tu contraseña?",
+                          TextStyle(decoration=TextDecoration.NONE, weight=FontWeight.W_900,),
+                          #on_click=lambda _: self.page.go('/terms'), #this work to going next page only
+
+                          on_click=lambda _: self.page.go('/signup'), # PROGRAMAR EL FORGOT PASSWORD
+                          #url="https://google.com",
+                          on_enter=lambda e: signin_highlight_link(e),
+                          on_exit=lambda e: signin_unhighlight_link(e),
+                      
+                      #Events type examples for print in console
+                          #on_click=lambda e: print(f"Clicked span: {e.control.uid}"),
+                          #on_enter=lambda e: print(f"Estoy encima de terminos y condiciones: {e.control.uid}"),
+                          #on_exit=lambda e: print(f"Estoy fuera de terminos y condiciones: {e.control.uid}"),
+                        ),
+                        TextSpan(".")
+                      ],
+                    ),
+                  ),
+
+                  
+                  #Dou you have an account?
+                  Container(
+                    padding=padding.only(left=20, right=20),
+                    content=Text(
+                      "¿No tienes una cuenta? ",
+                      disabled=False,
+                      #max_lines=2,
+                      text_align='center',
+                      spans=[
+                        TextSpan(" "),
+                        TextSpan(
+                          "Registrate",
+                          TextStyle(decoration=TextDecoration.NONE, weight=FontWeight.W_900,),
+                          #on_click=lambda _: self.page.go('/terms'), #this work to going next page only
+
+                          on_click=lambda _: self.page.go('/signup'),
+                          #url="https://google.com",
+                          on_enter=lambda e: signin_highlight_link(e),
+                          on_exit=lambda e: signin_unhighlight_link(e),
+                      
+                      #Events type examples for print in console
+                          #on_click=lambda e: print(f"Clicked span: {e.control.uid}"),
+                          #on_enter=lambda e: print(f"Estoy encima de terminos y condiciones: {e.control.uid}"),
+                          #on_exit=lambda e: print(f"Estoy fuera de terminos y condiciones: {e.control.uid}"),
+                        ),
+                        TextSpan(".")
+                      ],
+                    ),
+                  ),
+
+                  #Divider(color="transparent", height=25),
+                  Row(
+                     height=40,
+                     opacity=0,
                   )
-                ),
-              # Container(padding=padding.only(left=18,top=25),
-              #   content=Row(
-              #     controls=[
-              #       Container(
-              #         content=Image(
-              #           src='assets/icons/back.png'
-              #         )
-              #       )
-              #     ]
-              #   )
-              # ),
-              # Container(
-              #   height=120
-              # ),
-              # Image(
-              #   src='assets/images/logo.png',
-              #   # scale=0.5
-              #   width=200
-              # ),
-              # Container(
-              #   height=45
-              # ),
-              # Container(
-              #   alignment=alignment.center,
-              #   padding=padding.only(
-              #     # left=20,
-              #     # right=20,
-              #     bottom=6),
-              #   bgcolor="#CCe9e9e9",
-              #   height=44,
-              #   width=343,
-              #   border=border.all(color='#1A000000',width=0.5,),
-              #   border_radius=5,
-              #   content=TextField(
-              #     border=InputBorder.NONE,
-              #     color='#262626',
-              #     height=40,
-              #     width=300,
-              #     hint_text='Username',
-              #     hint_style=TextStyle(
-              #       color='#33000000',
-              #       font_family='SF Pro Regula',
-              #     ),
-                
-              #   )
-              # ),
-              # Container(
-              #   height=10
-              # ),
-              # Container(
-              #   alignment=alignment.center,
-              #   padding=padding.only(
-              #     left=0,
-              #     # right=20,
-              #     bottom=6),
-              #   bgcolor="#CCe9e9e9",
-              #   height=44,
-              #   width=343,
-              #   border=border.all(color='#1A000000',width=0.5,),
-              #   border_radius=5,
-              #   content=TextField(
-              #     border=InputBorder.NONE,
-              #     color='#262626',
-              #     height=40,
-              #     width=300,
-              #     hint_text='Password',
-              #     hint_style=TextStyle(
-              #       color='#33000000',
-              #       font_family='SF Pro Regula',
-              #     ),
-                
-              #   )
-              # ),
-              # Container(
-              #   height=18
-              # ),
-              # Row(
-              #   width=345,
-              #   alignment='end',
-              #   controls=[
-              #     Container(
-              #       on_click=lambda _: print('forgot password'),
-              #       content=Text("Forgot password?",
-              #         color='#3797EF',
-              #         font_family='SF Pro Medium',
-              #         size=12,
-              #         weight='w600',
-              # ),
-              #     )
-              #   ]
-              # ),
-              # Container(
-              #   height=30
-              # ),
-              
-              # Container(
-              #   on_click=lambda _: self.page.go('/login'),
-              #   height=44,
-              #   width=343,
-              #   border_radius=5,
-              #   # bgcolor='#3797EF',
-              #   bgcolor='#803797EF',
-              #   alignment=alignment.center,
-              #   content= Text('Log in',
-              #   color='white',
-              #   font_family='SF Pro SemiBold',
-              #   size=14,
-              #   text_align='center'
-              #   ),
-              # ),
-              # Container(
-              #   height=30,
-              # ),
-              # Row(
-              #   alignment='center',
-              #   controls=[
-              #     Image(
-              #       src='/assets/images/fb.png',
-              #     ),
-
-              #     Container(
-              #       on_click=lambda _: self.pg.go('/login'),
-              #       content=Text('Log in with Facebook',
-              #       color='#3797EF',
-              #       font_family='SF Pro SemiBold',
-              #       size=14,
-              #       text_align='center'
-              #       ),),
-              #      ]
-              #     ),
-
-              # Container(height=40),
-              # Container(
-              #   padding=padding.symmetric(horizontal=20),  
-              #   content = Row(
-              #   alignment='spaceBetween',
-              #   controls=[
-              #     Container(height=0.1,width=132,bgcolor='#000000'),
-              #     Text('OR',color='#66000000',size=12,font_family='SF Pro Semibold',weight=FontWeight.W_600),
-              #     Container(height=0.1,width=132,bgcolor='#000000'),
-              #   ]
-              # ),
-              # ),
-              # Container(height=35),
-              # Row(
-              #     spacing=0,
-              #     alignment='center',
-              #     controls=[
-              #       Text("Don't have an account?",
-              #         color='#000000',
-              #         font_family='SF Pro SemiBold',
-              #         size=14,
-              #         text_align='center',
-              #         opacity=0.4
-              #         ),Container(
-              #             width=6
-              #           ),
-              #       Container(
-              #         on_click = lambda _: self.pg.go('/signup'),
-              #         content=Text("Sign up.",
-              #         color='#3797EF',
-              #         font_family='SF Pro Regular',
-              #         size=14,
-              #         text_align='center',
-              #         ),
-              #       )
-              #     ]
-              #   ),
-
-
-              # Container(height=100),
-              # Divider(thickness=0.2),
-              # Container(height=10),
-
-              #   Row(
-              #     spacing=0,
-              #     alignment='center',
-              #     controls=[
-              #       Text("Instagram from Meta",
-              #         color='black',
-              #         font_family='SF Pro SemiBold',
-              #         size=12,
-              #         text_align='center',
-              #         opacity=0.4
-              #         )
-              #     ]
-              #   ),
                 ]
               )
             ]
@@ -296,234 +347,196 @@ class LoginScreen(UserControl):
         ) 
       ]
     )
-# class LoginScreen(UserControl):
-#   def __init__(self, pg):
-#     super().__init__()
-#     self.pg = pg
-#     self.login_button = Container(
-#                 on_click=lambda e: self.switch_page(),
-#                 height=44,
-#                 width=343,
-#                 border_radius=5,
-#                 # bgcolor='#3797EF',
-#                 bgcolor='#803797EF',
-#                 alignment=alignment.center,
-#                 content= Text('Log in',
-#                 color='white',
-#                 font_family='SF Pro SemiBold',
-#                 size=14,
-#                 text_align='center'
-#                 ),
-#               )
-#   def switch_page(self):
-#     self.pg.go('/home')
-#     back.back_ = '/login'
-           
-#   def enable_login(self,e):
-#     val = e.control.value
-#     if len(val) >= 8:
-#       self.login_button.bgcolor = '#3797EF'
-#       # self.login_button.on_click=lambda e: self.switch_page(),
-#       # self.login_button.on_click= self.switch_page,
-#       self.login_button.update()
-#     else:  
-#       # self.login_button.on_click = None
-#       self.login_button.bgcolor = '#803797EF'
-#       self.login_button.update()
 
-#   def build(self):
-#     return Column(
-#       controls=[
-#         BP(
-#           content=Column(
-#             spacing=0,
-
-#             # alignment=MainAxisAlignment.CENTER,
-#             horizontal_alignment='center',
-#             controls=[
-#               Container(padding=padding.only(left=18,top=25),
-#                 content=Row(
-#                   controls=[
-#                     Container(
-#                       on_click=lambda _: self.page.go(back.back_),
-#                       content=Image(
-#                         src='assets/icons/back.png'
-#                       )
-#                     )
-#                   ]
-#                 )
-#               ),
-#               Container(
-#                 height=120
-#               ),
-#               Image(
-#                 src='assets/images/logo.png',
-#                 # scale=0.5
-#                 width=200
-#               ),
-#               Container(
-#                 height=45
-#               ),
-#               Container(
-#                 alignment=alignment.center,
-#                 padding=padding.only(
-#                   # left=20,
-#                   # right=20,
-#                   bottom=6),
-#                 bgcolor="#CCe9e9e9",
-#                 height=44,
-#                 width=343,
-#                 border=border.all(color='#1A000000',width=0.5,),
-#                 border_radius=5,
-#                 content=TextField(
-#                   border=InputBorder.NONE,
-#                   color='#262626',
-#                   height=40,
-#                   width=300,
-#                   hint_text='Username',
-#                   hint_style=TextStyle(
-#                     color='#33000000',
-#                     font_family='SF Pro Regula',
-                    
-#                   ),
-                
-#                 )
-#               ),
-#               Container(
-#                 height=10
-#               ),
-#               Container(
-#                 alignment=alignment.center,
-#                 padding=padding.only(
-#                   left=0,
-#                   # right=20,
-#                   bottom=6),
-#                 bgcolor="#CCe9e9e9",
-#                 height=44,
-#                 width=343,
-#                 border=border.all(color='#1A000000',width=0.5,),
-#                 border_radius=5,
-#                 content=TextField(
-#                   password=True,
-#                   # can_reveal_password=True,
-#                   on_change=self.enable_login,
-#                   border=InputBorder.NONE,
-#                   color='#262626',
-#                   height=40,
-#                   width=300,
-#                   hint_text='Password',
-#                   hint_style=TextStyle(
-#                     color='#33000000',
-#                     font_family='SF Pro Regula',
-               
-#                   ),
-                
-#                 )
-#               ),
-#               Container(
-#                 height=18
-#               ),
-#               Row(
-#                 width=345,
-#                 alignment='end',
-#                 controls=[
-#                   Container(
-#                     on_click=lambda _: print('forgot password'),
-#                     content=Text("Forgot password?",
-#                       color='#3797EF',
-#                       font_family='SF Pro Medium',
-#                       size=12,
-#                       weight='w600',
-#               ),
-#                   )
-#                 ]
-#               ),
-#               Container(
-#                 height=30
-#               ),
-              
-#               self.login_button,
-#               Container(
-#                 height=30,
-#               ),
-#               Row(
-#                 alignment='center',
-#                 controls=[
-#                   Image(
-#                     src='/assets/images/fb.png',
-#                   ),
-
-#                   Container(
-#                     on_click=lambda _: self.pg.go('/login'),
-#                     content=Text('Log in with Facebook',
-#                     color='#3797EF',
-#                     font_family='SF Pro SemiBold',
-#                     size=14,
-#                     text_align='center'
-#                     ),),
-#                    ]
-#                   ),
-
-#               Container(height=40),
-#               Container(
-#                 padding=padding.symmetric(horizontal=20),  
-#                 content = Row(
-#                 alignment='spaceBetween',
-#                 controls=[
-#                   Container(height=0.1,width=132,bgcolor='#000000'),
-#                   Text('OR',color='#66000000',size=12,font_family='SF Pro Semibold',weight=FontWeight.W_600),
-#                   Container(height=0.1,width=132,bgcolor='#000000'),
-#                 ]
-#               ),
-#               ),
-#               Container(height=35),
-#               Row(
-#                   spacing=0,
-#                   alignment='center',
-#                   controls=[
-#                     Text("Don't have an account?",
-#                       color='#000000',
-#                       font_family='SF Pro SemiBold',
-#                       size=14,
-#                       text_align='center',
-#                       opacity=0.4
-#                       ),Container(
-#                           width=6
-#                         ),
-#                     Container(
-#                       on_click = lambda _: self.pg.go('/signup'),
-#                       content=Text("Sign up.",
-#                       color='#3797EF',
-#                       font_family='SF Pro Regular',
-#                       size=14,
-#                       text_align='center',
-#                       ),
-#                     )
-#                   ]
-#                 ),
+    def handle_sign_in_error():
+        snack_bar = SnackBar(
+            content=Text("El correo electrónico y/o la contraseña parecen no ser correctos.", color=input_fill_color),
+            bgcolor=hint_base_color_plus
+        )
+        page.overlay.append(snack_bar)
+        snack_bar.open = True
+        page.update()
 
 
-#               Container(height=100),
-#               Divider(thickness=0.2),
-#               Container(height=10),
+    def login_user(e):
+      global form1, form2
+    
+      email = str(form2).strip()
+      passw = str(form1).strip()
+      
+      if form1 == "False" or form2 == "False":
+        self.go_to_valid()
+        page.update()
+      else:
+        try:
+          print("email:",email,"pass:",passw)
+          myPyrebase.sign_in(email, passw)
+          form1 = ""
+          page.go('/home')
+          page.update()
+        except:
+          handle_sign_in_error()
+          page.update()
 
-#                 Row(
-#                   spacing=0,
-#                   alignment='center',
-#                   controls=[
-#                     Text("Instagram from Meta",
-#                       color='black',
-#                       font_family='SF Pro SemiBold',
-#                       size=12,
-#                       text_align='center',
-#                       opacity=0.4
-#                       )
-#                   ]
-#                 ),
-              
 
-#             ]
-#           )
-#         )
-#       ]
-#     )
+  #Return to loginIN
+  def go_to_signup(self):
+    self.page.go('/signup')
+    back.back_ = '/'
+
+  def next_clicked(self, e):
+        self.page.go("/") #change to next step VALID and submit
+
+  def create_text(size=10, weight=200, font_family='Poppins Bold', text_align='left', bgcolor='transparent', color='transparent'):
+    return Text(
+        '',
+        size=size,
+        weight=weight,
+        font_family=font_family,
+        text_align=text_align,
+        bgcolor=bgcolor,
+        color=color,
+    )
+  
+  #Create the Text()
+  tM = create_text()
+  tm = create_text()
+  tN = create_text()
+  tC = create_text()
+  nC = create_text()
+
+  tMail = create_text()
+  tUser = create_text()
+  validpass = create_text()
+  tValform = create_text()
+
+  containerofocult = Container(
+    content=Column(
+      controls=[
+        Container(
+          content=tm,
+        ),
+        Container(
+          content=tN,
+        ),
+        Container(
+          content=tC,
+        ),
+        Container(
+          content=nC,
+        ),
+      ],
+    ),
+  )
+  validform = "False"
+
+  tM.visible = tm.visible = tN.visible = tC.visible = nC.visible = False
+  containerofocult.visible = False
+
+  #Def form to the password has changed
+  def textbox_changed(self,e):
+
+    #If blank 
+    has_spaces = any(c.isspace() for c in e.control.value)
+    if e.control.value != "" and not has_spaces:
+       
+      mayusculas = len([c for c in e.control.value if c.isupper()])
+      minusculas = len([c for c in e.control.value if c.islower()])
+      numeros = len([c for c in e.control.value if c.isdigit()])
+      has_special_chars = any(not c.isalnum() and not c.isspace() for c in e.control.value)
+      
+      #self.tM.value = self.tm.value = self.tN.value = self.tC.value = self.nC.value = ""
+      self.tC.color = self.tN.color = self.tm.color = self.tM.color = self.nC.color = foreground_color
+      self.tM.visible = self.tm.visible = self.tN.visible = self.tC.visible = self.nC.visible = self.containerofocult.visible = True
+      self.nC.value = "❌ Número de caracteres."
+      self.tM.value = "❌ Mayusculas."
+      self.tm.value = "❌ Minusculas."
+      self.tN.value = "❌ Numeros."
+      self.tC.value = "❌ Caracteres Especiales."
+
+      if len(e.control.value) > 7:
+        self.nC.value = "✅ Número de caracteres."
+      if mayusculas > 0:
+         self.tM.value = "✅ Mayusculas."
+      if minusculas > 0:
+         self.tm.value = "✅ Minusculas."
+      if numeros > 0:
+         self.tN.value = "✅ Numeros."
+      if has_special_chars:
+        self.tC.value = "✅ Caracteres Especiales."
+    elif has_spaces: #Intro blank spaces
+      self.tM.color = foreground_color_error
+      self.tM.value = "¡❌ No puedes introducir  espacios!."
+      self.tm.value = self.tN.value = self.tC.value = self.nC.value = ""
+    else:
+      self.tM.color = foreground_color_error
+      self.tM.value = "➖ ¡Campo vacio!."
+      self.tm.value = self.tN.value = self.tC.value = self.nC.value = ""
+    self.update()
+
+  def textbox_shadow(self,e):
+    global form1
+    form1 = "False"
+
+    has_spaces = any(c.isspace() for c in e.control.value)
+    mayusculas = len([c for c in e.control.value if c.isupper()])
+    minusculas = len([c for c in e.control.value if c.islower()])
+    numeros = len([c for c in e.control.value if c.isdigit()])
+    has_special_chars = any(not c.isalnum() and not c.isspace() for c in e.control.value)
+
+    self.tm.value = self.tN.value = self.tC.value = self.nC.value = ""
+    self.tm.visible = self.tN.visible = self.tC.visible = self.nC.visible = self.containerofocult.visible = False
+    self.tM.visible = True
+
+    if mayusculas < 0 or minusculas < 0 or numeros < 0 or not has_special_chars or has_spaces:
+      
+      self.tM.color = foreground_color_error
+      self.tM.value = "❌ ¡No es una contraseña valida!."
+    elif e.control.value == "":
+      self.tM.color = foreground_color_error
+      self.tM.value = "➖ ¡Campo vacio!."
+    else:
+      self.tM.color = foreground_color_check
+      self.tM.value = "✅ Contraseña valida." 
+      form1 = e.control.value
+    self.update()
+
+
+  #forMAIL
+  def textbox_changed_mail(self,e):
+    global form2
+    form0 = "False"
+
+    has_spaces = any(c.isspace() for c in e.control.value)
+    # pattern for valid mail
+    patron = r'^[\w\.-]+@[a-zA-Z\d\.-]+\.[a-zA-Z]{2,}$'  
+
+    if e.control.value != "" and not has_spaces:
+      if not re.match(patron, e.control.value):
+        self.tMail.color = foreground_color_error
+        self.tMail.value = "❌ ¡No es un correo electrónico valido!."
+      else:
+        self.tMail.color = foreground_color_check
+        self.tMail.value = "✅ Correo electrónico valido."
+        form2 = e.control.value
+    elif e.control.value == "":
+      self.tMail.color = foreground_color_error
+      self.tMail.value = "➖ ¡Campo vacio!."
+    else:
+      self.tMail.color = foreground_color_error
+      self.tMail.value = "❌ ¡No puedes introducir  espacios!." 
+    self.update()
+
+
+  #Verify if the four txtfields are valid
+  def go_to_valid(self):
+
+    if form1 != "False" and form2 != "False":
+      self.tValform.color = foreground_color_check
+      self.tValform.value = "✅ ¡Puedes registrarte!"
+    else:
+      self.tValform.color = foreground_color_error
+      self.tValform.value = "❌ Alguno de los campos no son correctos"
+    self.update()
+
+

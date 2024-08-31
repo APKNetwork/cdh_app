@@ -10,8 +10,9 @@ form1 = "False"
 form2 = "False" 
 form3 = "False"
 
+# UIclase
 class SignupScreen(Container):
-  def __init__(self, page: Page):
+  def __init__(self, page: Page, myPyrebase):
     super().__init__()
     self.page = page
 
@@ -26,6 +27,17 @@ class SignupScreen(Container):
         "ChauPhilomeneOne Regular":"fonts/ChauPhilomeneOne/ChauPhilomeneOne-Regular.ttf",
         "ChauPhilomeneOne Italic":"fonts/ChauPhilomeneOne/ChauPhilomeneOne-Italic.ttf"
     }
+
+    # Set highlight and unhighlight of terms
+    def signin_highlight_link(e):
+      # For lighnight
+      e.control.style.color = selected_item
+      e.control.update()
+
+    def signin_unhighlight_link(e):
+      e.control.style.color = base_color
+      e.control.update()
+
     self.content = Column(
       tight=20,
       #vertical_alignment=CrossAxisAlignment.START,
@@ -53,7 +65,7 @@ class SignupScreen(Container):
                     width=650,
                     height='auto',
                     content=Image(
-                      src=f'/images/ON_signIn_flot_under_complet.png',
+                      src='/images/ON_signIn_flot_under_complet.png',
                       scale=1,
                       width='auto',
                       height='auto',
@@ -105,7 +117,7 @@ class SignupScreen(Container):
                       multiline=False,
                       
                       #THE CAPITALIZATION NOT WORKING ON 0.24.0 - - -
-                      #capitalization=TextCapitalization.CHARACTERS,
+                      capitalization=TextCapitalization.CHARACTERS,
                       input_filter=InputFilter(allow=True, regex_string="[A-Z,a-z,0-9, ]", replacement_string=""),
 
                       #Events
@@ -387,7 +399,7 @@ class SignupScreen(Container):
                   Container(
                     margin=margin.only(left=20, right=20), 
                     padding=padding.only(left=25, right=25),
-                    on_click=lambda e: self.go_to_valid(),
+                    on_click=lambda e: register_user(e),
                     height=50,
                     width=340,
                     border_radius=25,
@@ -417,6 +429,37 @@ class SignupScreen(Container):
                       ],
                     ),
                   ),
+                  
+                  #Dou you have an account?
+                  Container(
+                    padding=padding.only(left=20, right=20),
+                    content=Text(
+                      "¿Ya tienes una cuenta? ",
+                      disabled=False,
+                      #max_lines=2,
+                      text_align='center',
+                      spans=[
+                        TextSpan(" "),
+                        TextSpan(
+                          "Iniciar Sesión",
+                          TextStyle(decoration=TextDecoration.NONE, weight=FontWeight.W_900,),
+                          #on_click=lambda _: self.page.go('/terms'), #this work to going next page only
+
+                          on_click=lambda _: self.page.go('/login'),
+                          #url="https://google.com",
+                          on_enter=lambda e: signin_highlight_link(e),
+                          on_exit=lambda e: signin_unhighlight_link(e),
+                      
+                      #Events type examples for print in console
+                          #on_click=lambda e: print(f"Clicked span: {e.control.uid}"),
+                          #on_enter=lambda e: print(f"Estoy encima de terminos y condiciones: {e.control.uid}"),
+                          #on_exit=lambda e: print(f"Estoy fuera de terminos y condiciones: {e.control.uid}"),
+                        ),
+                        TextSpan(".")
+                      ],
+                    ),
+                  ),
+
                   #Divider(color="transparent", height=25),
                   Row(
                      height=40,
@@ -429,6 +472,53 @@ class SignupScreen(Container):
         ) 
       ]
     )
+
+  #pirebase4 for login/register
+    def handle_sign_in_error():
+        snack_bar = SnackBar(
+            content=Text("El correo electrónico ya está asociado a una cuenta.", color=input_fill_color),
+            bgcolor=hint_base_color_plus
+        )
+        page.overlay.append(snack_bar)
+        snack_bar.open = True
+        page.update()
+    
+    def register_user(e):
+      global form0, form1, form2, form3
+      
+      usern = str(form0).strip()
+      email = str(form1).strip()
+      passw = str(form2).strip()
+      
+      if form0 == "False" or form1 == "False" or form2 == "False" or form3 == "False":
+        self.go_to_valid()
+        page.update()
+      else:
+        try:
+          #print("User:",usern,"email:",email,"password:",passw)
+          myPyrebase.register_user(usern, email, passw)
+          #No imprime, ayuda.
+          usern, email, passw = '', '', ''
+          page.go('/home')
+          page.update()
+        except:
+          handle_sign_in_error()
+          page.update()
+          
+    
+    # payload = {
+    #     "email": form1,
+    #     "password": form2,
+    #     "returnSecureToken": True
+    # }
+    
+    # print("Payload being sent:", payload)
+
+  #Return to loginIN
+  def go_to_signup(self):
+    self.page.go('/login')
+    back.back_ = '/'
+
   def next_clicked(self, e):
         self.page.go("/") #change to next step VALID and submit
 
@@ -522,6 +612,7 @@ class SignupScreen(Container):
       self.tm.value = self.tN.value = self.tC.value = self.nC.value = ""
     self.update()
 
+  #forPassword blur
   def textbox_shadow(self,e):
     global form2
     form2 = "False"
@@ -546,7 +637,7 @@ class SignupScreen(Container):
     else:
       self.tM.color = foreground_color_check
       self.tM.value = "✅ Contraseña valida." 
-      form2 = "True"
+      form2 = e.control.value
     self.update()
 
   #forUSNAME
@@ -565,7 +656,7 @@ class SignupScreen(Container):
       else:
         self.tUser.color = foreground_color_check
         self.tUser.value = "✅ Usuario valido." 
-        form0 = "True"
+        form0 = e.control.value
     elif e.control.value == "":
       self.tUser.color = foreground_color_error
       self.tUser.value = "➖ ¡Campo vacio!."
@@ -581,7 +672,9 @@ class SignupScreen(Container):
 
     has_spaces = any(c.isspace() for c in e.control.value)
     # pattern for valid mail
-    patron = r'^[\w\.-]+@[a-zA-Z\d\.-]+\.[a-zA-Z]{2,}$'  
+    #patron = r'^[\w\.-]+@[a-zA-Z\d\.-]+\.[a-zA-Z]{2,}$'  
+    #New pattern
+    patron = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
 
     if e.control.value != "" and not has_spaces:
       if not re.match(patron, e.control.value):
@@ -590,7 +683,7 @@ class SignupScreen(Container):
       else:
         self.tMail.color = foreground_color_check
         self.tMail.value = "✅ Correo electrónico valido."
-        form1 = "True"
+        form1 = e.control.value
     elif e.control.value == "":
       self.tMail.color = foreground_color_error
       self.tMail.value = "➖ ¡Campo vacio!."
@@ -607,7 +700,7 @@ class SignupScreen(Container):
     if e.control.value == txtpass and txtpass != "":
       self.validpass.color = foreground_color_check
       self.validpass.value = "✅ Correo electrónico verificado."
-      form3 = "True"
+      form3 = e.control.value
     elif e.control.value == "":
       self.validpass.color = foreground_color_error
       self.validpass.value = "➖ ¡Campo vacio!."
@@ -619,12 +712,11 @@ class SignupScreen(Container):
   #Verify if the four txtfields are valid
   def go_to_valid(self):
 
-    if form0 == "True" and form1 == "True" and form2 == "True" and form3 == "True":
+    if form0 != "False" and form1 != "False" and form2 != "False" and form3 != "False":
       self.tValform.color = foreground_color_check
       self.tValform.value = "✅ ¡Puedes registrarte!"
     else:
       self.tValform.color = foreground_color_error
       self.tValform.value = "❌ Alguno de los campos no son correctos"
     self.update()
-
 

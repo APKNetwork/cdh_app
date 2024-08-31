@@ -3,6 +3,7 @@ from utils.selectable_container import SelectableContainer
 from utils import back
 from utils.extras import *
 
+
 # Const firebase auth
 # const firebaseConfig = {
 #     apiKey: "AIzaSyC_vNk-ij4QogsXt2FGAqaf3gga0nBcYFk",
@@ -15,7 +16,7 @@ from utils.extras import *
 
 
 class LoggedOutScreen(Container):
-  def __init__(self, page: Page):
+  def __init__(self, page: Page, myPyrebase=None):
     super().__init__()
     self.page = page
 
@@ -32,6 +33,7 @@ class LoggedOutScreen(Container):
         "ChauPhilomeneOne Regular":"fonts/ChauPhilomeneOne/ChauPhilomeneOne-Regular.ttf",
         "ChauPhilomeneOne Italic":"fonts/ChauPhilomeneOne/ChauPhilomeneOne-Italic.ttf"
     }
+
 
     #Funcions for terms and privacy
     def close_dlg(e):
@@ -630,7 +632,7 @@ class LoggedOutScreen(Container):
                         TextSpan(" "),
                         TextSpan(
                           "Terminos del Servicio",
-                          TextStyle(decoration=TextDecoration.UNDERLINE),
+                          TextStyle(decoration=TextDecoration.UNDERLINE, weight=FontWeight.W_800,),
                           #on_click=lambda _: self.page.go('/terms'), #this work to going next page only
 
                           on_click=lambda e: page.open(dlg_modal_terms),
@@ -648,7 +650,7 @@ class LoggedOutScreen(Container):
                         TextSpan(" "),
                         TextSpan(
                           "Politicas de Privacidad",
-                          TextStyle(decoration=TextDecoration.UNDERLINE),
+                          TextStyle(decoration=TextDecoration.UNDERLINE, weight=FontWeight.W_800,),
                           on_click=lambda e: page.open(dlg_modal_policy),
                           on_enter=lambda e: policy_highlight_link(e),
                           on_exit=lambda e: policy_unhighlight_link(e),
@@ -676,7 +678,7 @@ class LoggedOutScreen(Container):
   def go_to_login(self):
     self.page.go('/login')
     back.back_ = '/'
-  print("estoy en logged_out mandado por onboardings")
+  #print("estoy en logged_out mandado por onboardings")
 
   def go_to_signup(self):
     self.page.go('/signup')
